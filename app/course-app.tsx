@@ -9,6 +9,8 @@ import {
   Circle,
   Clock3,
   Code2,
+  Copy,
+  ExternalLink,
   FileCheck2,
   Menu,
   PanelLeftClose,
@@ -26,6 +28,11 @@ import {
   type Lesson,
   weekModules,
 } from "./curriculum";
+import {
+  foundationMaterialById,
+  type CopyBlock as CopyBlockData,
+  type DetailedLessonMaterial,
+} from "./foundation-lessons";
 
 type Section = "plan" | "materials" | "assignment";
 
@@ -423,9 +430,274 @@ function Sidebar({
   );
 }
 
+function CopyCodeBlock({ block }: { block: CopyBlockData }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copyCode() {
+    await navigator.clipboard.writeText(block.code);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1600);
+  }
+
+  return (
+    <div className="copy-block">
+      <div className="copy-block-head">
+        <div>
+          <span>{block.language.toUpperCase()}</span>
+          <strong>{block.title}</strong>
+        </div>
+        <button type="button" onClick={copyCode} aria-label={`${block.title} хуулах`}>
+          {copied ? <Check size={15} /> : <Copy size={15} />}
+          {copied ? "Хууллаа" : "Хуулах"}
+        </button>
+      </div>
+      <pre>
+        <code>{block.code}</code>
+      </pre>
+      {block.note && <p className="copy-note">{block.note}</p>}
+    </div>
+  );
+}
+
+function DetailedMaterials({ material }: { material: DetailedLessonMaterial }) {
+  return (
+    <div className="content-section detailed-materials">
+      <section className="study-intro">
+        <div className="section-heading">
+          <span>01</span>
+          <h2>Бие даан судлах материал</h2>
+        </div>
+        <p>
+          Дарааллаар нь уншаад, кодын блок бүрийг өөрийн файлд ажиллуул. Зүгээр
+          уншаад өнгөрөхгүй — бүлэг бүрийн дараа гаралтыг өөрийн үгээр
+          тайлбарлаарай.
+        </p>
+      </section>
+
+      <div className="chapter-stack">
+        {material.chapters.map((chapter) => (
+          <article className="lesson-chapter" key={chapter.title}>
+            <h2>{chapter.title}</h2>
+            <p className="chapter-lead">{chapter.lead}</p>
+            {chapter.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+            {chapter.points && (
+              <ul className="chapter-points">
+                {chapter.points.map((point) => (
+                  <li key={point}>
+                    <Check size={14} aria-hidden="true" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {chapter.blocks?.map((block) => (
+              <CopyCodeBlock block={block} key={block.title} />
+            ))}
+          </article>
+        ))}
+      </div>
+
+      <section className="glossary-section">
+        <div className="section-heading">
+          <span>02</span>
+          <h2>Нэр томьёоны лавлах</h2>
+        </div>
+        <dl className="glossary-grid">
+          {material.glossary.map((item) => (
+            <div key={item.term}>
+              <dt>{item.term}</dt>
+              <dd>{item.definition}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section className="ai-workshop">
+        <div className="section-heading">
+          <span>03</span>
+          <h2>{material.aiLab.title}</h2>
+        </div>
+        <p className="chapter-lead">{material.aiLab.purpose}</p>
+        <CopyCodeBlock
+          block={{
+            title: "AI лабораторийн prompt",
+            language: "prompt",
+            code: material.aiLab.prompt,
+            note: "[ ] доторх хэсгийг өөрийн бодит баримтаар сольж байж ашиглана.",
+          }}
+        />
+        <div className="lab-grid">
+          <div>
+            <span>ХИЙХ ДАРААЛАЛ</span>
+            <ol>
+              {material.aiLab.steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <span>ӨӨРИЙГӨӨ ШАЛГАХ</span>
+            <ul>
+              {material.aiLab.checks.map((check) => (
+                <li key={check}>
+                  <Check size={13} />
+                  {check}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {material.references && (
+        <section className="reference-section">
+          <div className="section-heading">
+            <span>04</span>
+            <h2>Албан ёсны лавлах</h2>
+          </div>
+          <div className="reference-list">
+            {material.references.map((reference) => (
+              <a href={reference.url} target="_blank" rel="noreferrer" key={reference.url}>
+                <span>
+                  <strong>{reference.label}</strong>
+                  <small>{reference.note}</small>
+                </span>
+                <ExternalLink size={16} aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
+function DetailedAssignment({ material }: { material: DetailedLessonMaterial }) {
+  return (
+    <div className="content-section detailed-assignment">
+      <section className="exercise-section">
+        <div className="section-heading">
+          <span>01</span>
+          <h2>Хичээл дээр хийх дасгал</h2>
+        </div>
+        <div className="exercise-stack">
+          {material.exercises.map((exercise) => (
+            <article className="exercise-card" key={exercise.title}>
+              <div className="exercise-title">
+                <div>
+                  <span>{exercise.duration}</span>
+                  <h3>{exercise.title}</h3>
+                </div>
+                <p>{exercise.objective}</p>
+              </div>
+              <ol className="exercise-steps">
+                {exercise.steps.map((step, index) => (
+                  <li key={step}>
+                    <span>{index + 1}</span>
+                    <p>{step}</p>
+                  </li>
+                ))}
+              </ol>
+              {exercise.blocks?.map((block) => (
+                <CopyCodeBlock block={block} key={block.title} />
+              ))}
+              <div className="exercise-checks">
+                <strong>Зөв хийснээ ингэж шалга</strong>
+                <ul>
+                  {exercise.checks.map((check) => (
+                    <li key={check}>
+                      <CheckCircle2 size={15} />
+                      {check}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {(exercise.hint || exercise.solution) && (
+                <div className="answer-details">
+                  {exercise.hint && (
+                    <details>
+                      <summary>Гацвал hint харах</summary>
+                      <p>{exercise.hint}</p>
+                    </details>
+                  )}
+                  {exercise.solution && (
+                    <details>
+                      <summary>Шалгасны дараа тайлбар харах</summary>
+                      <p>{exercise.solution}</p>
+                    </details>
+                  )}
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="homework-card">
+        <div className="homework-head">
+          <div className="deliverable-icon">
+            <FileCheck2 size={24} />
+          </div>
+          <div>
+            <span>БИЕ ДААЛТ · {material.assignment.due}</span>
+            <h2>{material.assignment.title}</h2>
+            <p>{material.assignment.description}</p>
+          </div>
+        </div>
+        {material.assignment.starter && <CopyCodeBlock block={material.assignment.starter} />}
+        {material.assignment.blocks?.map((block) => (
+          <CopyCodeBlock block={block} key={block.title} />
+        ))}
+        <div className="homework-grid">
+          <div>
+            <h3>Гүйцэтгэх дараалал</h3>
+            <ol>
+              {material.assignment.steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <h3>Хүлээлгэн өгөх зүйл</h3>
+            <ul>
+              {material.assignment.deliverables.map((item) => (
+                <li key={item}><Check size={14} />{item}</li>
+              ))}
+            </ul>
+            <h3>Дууссан гэж үзэх шалгуур</h3>
+            <ul>
+              {material.assignment.criteria.map((item) => (
+                <li key={item}><Check size={14} />{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="quiz-section">
+        <div className="section-heading">
+          <span>02</span>
+          <h2>Хариугаа хэлсний дараа нээ</h2>
+        </div>
+        <div className="quiz-list">
+          {material.quiz.map((item, index) => (
+            <details key={item.question}>
+              <summary><span>{String(index + 1).padStart(2, "0")}</span>{item.question}</summary>
+              <p><strong>{item.answer}</strong> {item.explanation}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function PlanSection({ lesson }: { lesson: Lesson }) {
-  const goals = learningGoals(lesson);
-  const timeline = lessonTimeline(lesson);
+  const material = foundationMaterialById[lesson.id];
+  const goals = material?.goals ?? learningGoals(lesson);
+  const timeline = material?.schedule ?? lessonTimeline(lesson);
 
   return (
     <div className="content-section">
@@ -449,7 +721,7 @@ function PlanSection({ lesson }: { lesson: Lesson }) {
         <aside className="outcome-note">
           <span>ХИЧЭЭЛИЙН ЭЦЭСТ</span>
           <Target size={22} aria-hidden="true" />
-          <p>{lessonOutcome(lesson)}</p>
+          <p>{material?.outcome ?? lessonOutcome(lesson)}</p>
         </aside>
       </div>
 
@@ -489,29 +761,45 @@ function PlanSection({ lesson }: { lesson: Lesson }) {
         <div className="checklist-grid">
           <div>
             <span>ӨМНӨ НЬ</span>
-            <p>
-              Өмнөх хичээлийн commit-оо push хийж, ойлгоогүй нэг асуултаа
-              бэлдэнэ.
-            </p>
+            {material ? (
+              <ul>{material.prerequisites.map((item) => <li key={item}>{item}</li>)}</ul>
+            ) : (
+              <p>Өмнөх хичээлийн commit-оо push хийж, ойлгоогүй нэг асуултаа бэлдэнэ.</p>
+            )}
           </div>
           <div>
             <span>ХЭРЭГСЭЛ</span>
-            <p>{(toolsets[lesson.module] ?? toolsets.Суурь).join(" · ")}</p>
+            <p>{(material?.tools ?? toolsets[lesson.module] ?? toolsets.Суурь).join(" · ")}</p>
           </div>
           <div>
             <span>НОТОЛГОО</span>
-            <p>
-              Код, screenshot, prompt ба review тэмдэглэлээс тохирохыг хичээлийн
-              төгсгөлд өгнө.
-            </p>
+            <p>{material?.evidence ?? "Код, screenshot, prompt ба review тэмдэглэлээс тохирохыг хичээлийн төгсгөлд өгнө."}</p>
           </div>
         </div>
+        {material && (
+          <div className="readiness-note">
+            <div>
+              <span>БЭЛТГЭЛ</span>
+              <p>{material.preparation}</p>
+            </div>
+            <div>
+              <span>ЭНЭ ХИЧЭЭЛД ШААРДАХГҮЙ</span>
+              <p>{material.notRequired.join(" · ")}</p>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );
 }
 
 function MaterialsSection({ lesson }: { lesson: Lesson }) {
+  const detailed = foundationMaterialById[lesson.id];
+
+  if (detailed) {
+    return <DetailedMaterials material={detailed} />;
+  }
+
   const concepts = keyConcepts(lesson);
   const notes = moduleNotes[lesson.module] ?? moduleNotes.Суурь;
   const prompt = `Чи миний кодыг шууд засахгүй, харин бодох дарааллыг чиглүүлэх mentor.
@@ -622,6 +910,12 @@ function MaterialsSection({ lesson }: { lesson: Lesson }) {
 }
 
 function AssignmentSection({ lesson }: { lesson: Lesson }) {
+  const detailed = foundationMaterialById[lesson.id];
+
+  if (detailed) {
+    return <DetailedAssignment material={detailed} />;
+  }
+
   const isProject = lesson.kind === "project" || lesson.kind === "capstone";
   const deliverable = isProject
     ? `${lesson.title}-ийн өнөөдрийн ажиллах хувилбар, commit түүх, review тэмдэглэл.`
@@ -767,22 +1061,28 @@ export default function CourseApp() {
   const lesson = lessons[selectedId - 1] ?? lessons[0];
 
   useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem("ai-frontend-completed");
-      if (stored) setCompleted(new Set(JSON.parse(stored) as number[]));
-    } catch {
-      // Progress remains available for this session if browser storage is unavailable.
-    }
+    const timer = window.setTimeout(() => {
+      try {
+        const stored = window.localStorage.getItem("ai-frontend-completed");
+        if (stored) setCompleted(new Set(JSON.parse(stored) as number[]));
+      } catch {
+        // Progress remains available for this session if browser storage is unavailable.
+      }
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    try {
-      setSidebarCollapsed(
-        window.localStorage.getItem("ai-frontend-sidebar-collapsed") === "true",
-      );
-    } catch {
-      // Use the expanded sidebar when browser storage is unavailable.
-    }
+    const timer = window.setTimeout(() => {
+      try {
+        setSidebarCollapsed(
+          window.localStorage.getItem("ai-frontend-sidebar-collapsed") === "true",
+        );
+      } catch {
+        // Use the expanded sidebar when browser storage is unavailable.
+      }
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -905,6 +1205,9 @@ export default function CourseApp() {
                 {lessonKindLabel[lesson.kind]}
               </span>
               <span>ХИЧЭЭЛ {String(lesson.id).padStart(2, "0")}</span>
+              {foundationMaterialById[lesson.id] && (
+                <span className="self-study-badge">БИЕ ДААН СУРАХ ХУВИЛБАР</span>
+              )}
             </div>
             <div className="lesson-title-row">
               <div>
