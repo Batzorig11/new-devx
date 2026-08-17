@@ -20,6 +20,7 @@ import {
   Target,
   X,
 } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import {
   keyConcepts,
@@ -1222,6 +1223,10 @@ export default function CourseApp() {
             </div>
           </div>
           <div className="topbar-actions">
+            <Link className="curriculum-link" href="/curriculum">
+              <BookOpen size={16} />
+              <span>Сургалтын төлөвлөгөө</span>
+            </Link>
             <button
               className="search-trigger"
               onClick={() => setSearchOpen(true)}
