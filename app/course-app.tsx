@@ -11,6 +11,8 @@ import {
   Code2,
   FileCheck2,
   Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
   Search,
   Sparkles,
   Target,
@@ -70,11 +72,26 @@ const moduleNotes: Record<string, string[]> = {
 
 const toolsets: Record<string, string[]> = {
   Суурь: ["Browser DevTools", "Terminal", "VS Code / Cursor", "Git & GitHub"],
-  "HTML & CSS": ["VS Code / Cursor", "Browser DevTools", "Lighthouse", "AI редактор"],
+  "HTML & CSS": [
+    "VS Code / Cursor",
+    "Browser DevTools",
+    "Lighthouse",
+    "AI редактор",
+  ],
   JavaScript: ["Browser Console", "Node.js", "VS Code / Cursor", "Git"],
   "React & Next.js": ["React DevTools", "Next.js", "Terminal agent", "GitHub"],
-  "AI бүтээгдэхүүн": ["Next.js", "Vercel AI SDK", "LLM API", "Evaluation checklist"],
-  "Төгсөлтийн төсөл": ["PRD template", "GitHub", "CLI agent", "Deployment platform"],
+  "AI бүтээгдэхүүн": [
+    "Next.js",
+    "Vercel AI SDK",
+    "LLM API",
+    "Evaluation checklist",
+  ],
+  "Төгсөлтийн төсөл": [
+    "PRD template",
+    "GitHub",
+    "CLI agent",
+    "Deployment platform",
+  ],
 };
 
 function learningGoals(lesson: Lesson) {
@@ -97,23 +114,99 @@ function lessonOutcome(lesson: Lesson) {
 function lessonTimeline(lesson: Lesson): TimelineItem[] {
   if (lesson.kind === "project" || lesson.kind === "capstone") {
     return [
-      { start: "00:00", duration: 20, title: "Хүрээ ба амжилтын шалгуур", description: `${lesson.title} ажлын өнөөдрийн хүрээ, бэлэн болох нөхцөл, эрсдэлийг тогтооно.` },
-      { start: "00:20", duration: 35, title: "Төлөвлөгөө ба checkpoint", description: "Ажлыг шалгаж болох жижиг алхамд хувааж, Git checkpoint үүсгэнэ." },
-      { start: "00:55", duration: 45, title: "Хөгжүүлэлтийн спринт I", description: `${lesson.summary}. Эхний ажиллах хувилбарыг багшийн богино review хүртэл хийнэ.`, kind: "practice" },
-      { start: "01:40", duration: 10, title: "Завсарлага", description: "Дэлгэцээс холдож, дараагийн спринтийн зорилгоо цэгцэлнэ.", kind: "break" },
-      { start: "01:50", duration: 45, title: "Хөгжүүлэлтийн спринт II", description: `${lesson.aiAngle}. Diff бүрийг уншиж, тесттэйгээр нэгтгэнэ.`, kind: "ai" },
-      { start: "02:35", duration: 25, title: "Demo, review ба дараагийн алхам", description: "Бүтээлээ үзүүлж, шийдвэрээ хамгаалан, review тэмдэглэл болон дараагийн ажлаа бичнэ." },
+      {
+        start: "00:00",
+        duration: 20,
+        title: "Хүрээ ба амжилтын шалгуур",
+        description: `${lesson.title} ажлын өнөөдрийн хүрээ, бэлэн болох нөхцөл, эрсдэлийг тогтооно.`,
+      },
+      {
+        start: "00:20",
+        duration: 35,
+        title: "Төлөвлөгөө ба checkpoint",
+        description:
+          "Ажлыг шалгаж болох жижиг алхамд хувааж, Git checkpoint үүсгэнэ.",
+      },
+      {
+        start: "00:55",
+        duration: 45,
+        title: "Хөгжүүлэлтийн спринт I",
+        description: `${lesson.summary}. Эхний ажиллах хувилбарыг багшийн богино review хүртэл хийнэ.`,
+        kind: "practice",
+      },
+      {
+        start: "01:40",
+        duration: 10,
+        title: "Завсарлага",
+        description: "Дэлгэцээс холдож, дараагийн спринтийн зорилгоо цэгцэлнэ.",
+        kind: "break",
+      },
+      {
+        start: "01:50",
+        duration: 45,
+        title: "Хөгжүүлэлтийн спринт II",
+        description: `${lesson.aiAngle}. Diff бүрийг уншиж, тесттэйгээр нэгтгэнэ.`,
+        kind: "ai",
+      },
+      {
+        start: "02:35",
+        duration: 25,
+        title: "Demo, review ба дараагийн алхам",
+        description:
+          "Бүтээлээ үзүүлж, шийдвэрээ хамгаалан, review тэмдэглэл болон дараагийн ажлаа бичнэ.",
+      },
     ];
   }
 
   return [
-    { start: "00:00", duration: 15, title: "Нээлт ба өмнөх мэдлэг", description: `“${lesson.title}” сэдвийн оношлох асуулт, бодит жишээгээр хичээлийн зорилгыг нээнэ.` },
-    { start: "00:15", duration: 40, title: "Үндсэн ойлголт", description: `${lesson.summary}. Багш зураглал, live code эсвэл бодит бүтээгдэхүүний жишээгээр тайлбарлана.` },
-    { start: "00:55", duration: 30, title: "Удирдамжтай дадлага", description: "Багштай хамт нэг жишээ гүйцэтгэж, алхам бүрийн шийдвэр ба үр дүнг урьдчилан таамаглана.", kind: "practice" },
-    { start: "01:25", duration: 10, title: "Завсарлага", description: "10 минутын завсарлага.", kind: "break" },
-    { start: "01:35", duration: 40, title: "Бие даасан лаборатори", description: `Сэдвийн жижиг хувилбарыг эхлээд AI-гүй гүйцэтгэж, browser эсвэл тестээр үр дүнгээ батална.`, kind: "practice" },
-    { start: "02:15", duration: 30, title: "AI инженерийн лаборатори", description: `${lesson.aiAngle}. Prompt, гарсан үр дүн, хүлээн авсан эсвэл татгалзсан шалтгаанаа тэмдэглэнэ.`, kind: "ai" },
-    { start: "02:45", duration: 15, title: "Дүгнэлт ба exit ticket", description: "3 богино асуултад хариулж, commit эсвэл ажлын нотолгоогоо хүлээлгэн өгнө." },
+    {
+      start: "00:00",
+      duration: 15,
+      title: "Нээлт ба өмнөх мэдлэг",
+      description: `“${lesson.title}” сэдвийн оношлох асуулт, бодит жишээгээр хичээлийн зорилгыг нээнэ.`,
+    },
+    {
+      start: "00:15",
+      duration: 40,
+      title: "Үндсэн ойлголт",
+      description: `${lesson.summary}. Багш зураглал, live code эсвэл бодит бүтээгдэхүүний жишээгээр тайлбарлана.`,
+    },
+    {
+      start: "00:55",
+      duration: 30,
+      title: "Удирдамжтай дадлага",
+      description:
+        "Багштай хамт нэг жишээ гүйцэтгэж, алхам бүрийн шийдвэр ба үр дүнг урьдчилан таамаглана.",
+      kind: "practice",
+    },
+    {
+      start: "01:25",
+      duration: 10,
+      title: "Завсарлага",
+      description: "10 минутын завсарлага.",
+      kind: "break",
+    },
+    {
+      start: "01:35",
+      duration: 40,
+      title: "Бие даасан лаборатори",
+      description: `Сэдвийн жижиг хувилбарыг эхлээд AI-гүй гүйцэтгэж, browser эсвэл тестээр үр дүнгээ батална.`,
+      kind: "practice",
+    },
+    {
+      start: "02:15",
+      duration: 30,
+      title: "AI инженерийн лаборатори",
+      description: `${lesson.aiAngle}. Prompt, гарсан үр дүн, хүлээн авсан эсвэл татгалзсан шалтгаанаа тэмдэглэнэ.`,
+      kind: "ai",
+    },
+    {
+      start: "02:45",
+      duration: 15,
+      title: "Дүгнэлт ба exit ticket",
+      description:
+        "3 богино асуултад хариулж, commit эсвэл ажлын нотолгоогоо хүлээлгэн өгнө.",
+    },
   ];
 }
 
@@ -144,7 +237,13 @@ function SearchDialog({
 
   return (
     <div className="search-overlay" role="presentation" onMouseDown={onClose}>
-      <section className="search-dialog" role="dialog" aria-modal="true" aria-label="Хичээл хайх" onMouseDown={(event) => event.stopPropagation()}>
+      <section
+        className="search-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Хичээл хайх"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
         <div className="search-field">
           <Search size={19} aria-hidden="true" />
           <input
@@ -153,18 +252,35 @@ function SearchDialog({
             onChange={(event) => onQueryChange(event.target.value)}
             placeholder="Сэдэв, хэрэгсэл эсвэл түлхүүр үгээр хайх..."
           />
-          <button onClick={onClose} aria-label="Хайлтыг хаах"><X size={18} /></button>
+          <button onClick={onClose} aria-label="Хайлтыг хаах">
+            <X size={18} />
+          </button>
         </div>
-        <div className="search-summary"><span>{matches.length} хичээл олдлоо</span><kbd>ESC · хаах</kbd></div>
+        <div className="search-summary">
+          <span>{matches.length} хичээл олдлоо</span>
+          <kbd>ESC · хаах</kbd>
+        </div>
         <div className="search-results">
           {matches.map((lesson) => (
             <button key={lesson.id} onClick={() => onSelect(lesson.id)}>
-              <span className={`result-number ${lesson.kind}`}>{String(lesson.id).padStart(2, "0")}</span>
-              <span><strong>{lesson.title}</strong><small>{lesson.week}-р долоо хоног · {lesson.module}</small></span>
+              <span className={`result-number ${lesson.kind}`}>
+                {String(lesson.id).padStart(2, "0")}
+              </span>
+              <span>
+                <strong>{lesson.title}</strong>
+                <small>
+                  {lesson.week}-р долоо хоног · {lesson.module}
+                </small>
+              </span>
               <ChevronRight size={16} aria-hidden="true" />
             </button>
           ))}
-          {matches.length === 0 && <div className="empty-search"><Search size={30} /><p>Ийм агуулгатай хичээл олдсонгүй.</p></div>}
+          {matches.length === 0 && (
+            <div className="empty-search">
+              <Search size={30} />
+              <p>Ийм агуулгатай хичээл олдсонгүй.</p>
+            </div>
+          )}
         </div>
       </section>
     </div>
@@ -175,13 +291,17 @@ function Sidebar({
   lesson,
   completed,
   open,
+  collapsed,
   onClose,
+  onToggleCollapse,
   onSelect,
 }: {
   lesson: Lesson;
   completed: Set<number>;
   open: boolean;
+  collapsed: boolean;
   onClose: () => void;
+  onToggleCollapse: () => void;
   onSelect: (id: number) => void;
 }) {
   const weekLessons = lessons.filter((item) => item.week === lesson.week);
@@ -189,32 +309,88 @@ function Sidebar({
 
   return (
     <>
-      <div className={`mobile-scrim ${open ? "show" : ""}`} onClick={onClose} aria-hidden="true" />
-      <aside className={`course-sidebar ${open ? "open" : ""}`}>
+      <div
+        className={`mobile-scrim ${open ? "show" : ""}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <aside
+        className={`course-sidebar ${open ? "open" : ""} ${collapsed ? "collapsed" : ""}`}
+      >
         <div className="sidebar-head">
-          <div className="site-brand"><span className="site-mark">A</span><span>AI / FRONTEND</span></div>
-          <button className="sidebar-close" onClick={onClose} aria-label="Цэс хаах"><X size={19} /></button>
+          <div className="site-brand">
+            <span className="site-mark">A</span>
+            <span>AI / FRONTEND</span>
+          </div>
+          <div className="sidebar-controls">
+            <button
+              className="collapse-toggle"
+              onClick={onToggleCollapse}
+              aria-label={collapsed ? "Sidebar дэлгэх" : "Sidebar эвхэх"}
+              aria-expanded={!collapsed}
+              title={collapsed ? "Sidebar дэлгэх" : "Sidebar эвхэх"}
+            >
+              {collapsed ? (
+                <PanelLeftOpen size={19} />
+              ) : (
+                <PanelLeftClose size={19} />
+              )}
+            </button>
+            <button
+              className="sidebar-close"
+              onClick={onClose}
+              aria-label="Цэс хаах"
+            >
+              <X size={19} />
+            </button>
+          </div>
         </div>
 
-        <div className="sidebar-course">AI-Native<br />Frontend Engineering</div>
+        <div className="sidebar-course">
+          AI-Native
+          <br />
+          Frontend Engineering
+        </div>
 
         <div className="course-progress">
-          <div><span>Курсийн явц</span><strong>{percent}%</strong></div>
-          <div className="progress-line"><i style={{ width: `${Math.max(percent, 1)}%` }} /></div>
+          <div>
+            <span>Курсийн явц</span>
+            <strong>{percent}%</strong>
+          </div>
+          <div className="progress-line">
+            <i style={{ width: `${Math.max(percent, 1)}%` }} />
+          </div>
           <small>{completed.size} / 48 хичээл · нийт 144 цаг</small>
         </div>
 
         <div className="week-heading">
-          <div><span>{String(lesson.week).padStart(2, "0")}</span><b>{lesson.week}-р долоо хоног</b></div>
+          <div>
+            <span>{String(lesson.week).padStart(2, "0")}</span>
+            <b>{lesson.week}-р долоо хоног</b>
+          </div>
           <small>{lesson.module}</small>
         </div>
 
-        <nav className="sidebar-lessons" aria-label={`${lesson.week}-р долоо хоногийн хичээлүүд`}>
+        <nav
+          className="sidebar-lessons"
+          aria-label={`${lesson.week}-р долоо хоногийн хичээлүүд`}
+        >
           {weekLessons.map((item) => (
-            <button className={item.id === lesson.id ? "active" : ""} onClick={() => onSelect(item.id)} key={item.id}>
-              <span className="sidebar-number">{String(item.id).padStart(2, "0")}</span>
+            <button
+              className={item.id === lesson.id ? "active" : ""}
+              onClick={() => onSelect(item.id)}
+              key={item.id}
+              title={collapsed ? item.title : undefined}
+            >
+              <span className="sidebar-number">
+                {String(item.id).padStart(2, "0")}
+              </span>
               <span className="sidebar-title">{item.title}</span>
-              {completed.has(item.id) ? <CheckCircle2 size={15} className="done-icon" /> : item.kind === "ai" ? <em>AI</em> : null}
+              {completed.has(item.id) ? (
+                <CheckCircle2 size={15} className="done-icon" />
+              ) : item.kind === "ai" ? (
+                <em>AI</em>
+              ) : null}
             </button>
           ))}
         </nav>
@@ -227,6 +403,11 @@ function Sidebar({
               className={item.week === lesson.week ? "active" : ""}
               onClick={() => onSelect((item.week - 1) * 4 + 1)}
               aria-label={`${item.week}-р долоо хоног — ${item.module}`}
+              title={
+                collapsed
+                  ? `${item.week}-р долоо хоног — ${item.module}`
+                  : undefined
+              }
             >
               {String(item.week).padStart(2, "0")}
             </button>
@@ -250,9 +431,19 @@ function PlanSection({ lesson }: { lesson: Lesson }) {
     <div className="content-section">
       <div className="lesson-grid">
         <section>
-          <div className="section-heading"><span>01</span><h2>Өнөөдрийн зорилго</h2></div>
+          <div className="section-heading">
+            <span>01</span>
+            <h2>Өнөөдрийн зорилго</h2>
+          </div>
           <div className="goal-list">
-            {goals.map((goal) => <div key={goal}><i><Check size={13} /></i><p>{goal}</p></div>)}
+            {goals.map((goal) => (
+              <div key={goal}>
+                <i>
+                  <Check size={13} />
+                </i>
+                <p>{goal}</p>
+              </div>
+            ))}
           </div>
         </section>
         <aside className="outcome-note">
@@ -263,24 +454,57 @@ function PlanSection({ lesson }: { lesson: Lesson }) {
       </div>
 
       <section className="timeline-section">
-        <div className="section-heading"><span>02</span><h2>3 цагийн хичээлийн урсгал</h2><small>Нийт 180 минут</small></div>
+        <div className="section-heading">
+          <span>02</span>
+          <h2>3 цагийн хичээлийн урсгал</h2>
+          <small>Нийт 180 минут</small>
+        </div>
         <div className="timeline-list">
           {timeline.map((item, index) => (
-            <div className={`timeline-item ${item.kind ?? ""}`} key={`${item.start}-${item.title}`}>
-              <div className="timeline-time"><time>{item.start}</time><small>{item.duration} мин</small></div>
-              <div className="timeline-rail"><i>{index + 1}</i></div>
-              <div className="timeline-copy"><h3>{item.title}</h3><p>{item.description}</p></div>
+            <div
+              className={`timeline-item ${item.kind ?? ""}`}
+              key={`${item.start}-${item.title}`}
+            >
+              <div className="timeline-time">
+                <time>{item.start}</time>
+                <small>{item.duration} мин</small>
+              </div>
+              <div className="timeline-rail">
+                <i>{index + 1}</i>
+              </div>
+              <div className="timeline-copy">
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
       <section className="class-checklist">
-        <div className="section-heading"><span>03</span><h2>Хичээлд бэлдэх</h2></div>
+        <div className="section-heading">
+          <span>03</span>
+          <h2>Хичээлд бэлдэх</h2>
+        </div>
         <div className="checklist-grid">
-          <div><span>ӨМНӨ НЬ</span><p>Өмнөх хичээлийн commit-оо push хийж, ойлгоогүй нэг асуултаа бэлдэнэ.</p></div>
-          <div><span>ХЭРЭГСЭЛ</span><p>{(toolsets[lesson.module] ?? toolsets.Суурь).join(" · ")}</p></div>
-          <div><span>НОТОЛГОО</span><p>Код, screenshot, prompt ба review тэмдэглэлээс тохирохыг хичээлийн төгсгөлд өгнө.</p></div>
+          <div>
+            <span>ӨМНӨ НЬ</span>
+            <p>
+              Өмнөх хичээлийн commit-оо push хийж, ойлгоогүй нэг асуултаа
+              бэлдэнэ.
+            </p>
+          </div>
+          <div>
+            <span>ХЭРЭГСЭЛ</span>
+            <p>{(toolsets[lesson.module] ?? toolsets.Суурь).join(" · ")}</p>
+          </div>
+          <div>
+            <span>НОТОЛГОО</span>
+            <p>
+              Код, screenshot, prompt ба review тэмдэглэлээс тохирохыг хичээлийн
+              төгсгөлд өгнө.
+            </p>
+          </div>
         </div>
       </section>
     </div>
@@ -305,33 +529,92 @@ function MaterialsSection({ lesson }: { lesson: Lesson }) {
   return (
     <div className="content-section materials-section">
       <section className="reading-note">
-        <div className="section-heading"><span>01</span><h2>Сэдвийн гол санаа</h2></div>
-        <p className="lead-note"><strong>{lesson.title}</strong> — {lesson.summary.toLocaleLowerCase("mn")}.</p>
-        {notes.map((note) => <p key={note}>{note}</p>)}
-        <div className="ai-callout"><Sparkles size={19} /><div><span>AI ИНЖЕНЕРИЙН ӨНЦӨГ</span><p>{lesson.aiAngle}.</p></div></div>
+        <div className="section-heading">
+          <span>01</span>
+          <h2>Сэдвийн гол санаа</h2>
+        </div>
+        <p className="lead-note">
+          <strong>{lesson.title}</strong> —{" "}
+          {lesson.summary.toLocaleLowerCase("mn")}.
+        </p>
+        {notes.map((note) => (
+          <p key={note}>{note}</p>
+        ))}
+        <div className="ai-callout">
+          <Sparkles size={19} />
+          <div>
+            <span>AI ИНЖЕНЕРИЙН ӨНЦӨГ</span>
+            <p>{lesson.aiAngle}.</p>
+          </div>
+        </div>
       </section>
 
       <section className="concept-section">
-        <div className="section-heading"><span>02</span><h2>Түлхүүр ойлголтууд</h2></div>
+        <div className="section-heading">
+          <span>02</span>
+          <h2>Түлхүүр ойлголтууд</h2>
+        </div>
         <div className="concept-grid">
           {concepts.map((concept, index) => (
-            <article key={concept}><span>0{index + 1}</span><h3>{concept}</h3><p>Энэ ойлголтыг өөрийн үгээр тодорхойлж, нэг бодит жишээтэй холбоно.</p></article>
+            <article key={concept}>
+              <span>0{index + 1}</span>
+              <h3>{concept}</h3>
+              <p>
+                Энэ ойлголтыг өөрийн үгээр тодорхойлж, нэг бодит жишээтэй
+                холбоно.
+              </p>
+            </article>
           ))}
         </div>
       </section>
 
       <section className="prompt-lab">
-        <div className="prompt-head"><div><Sparkles size={17} /><span>Дахин ашиглах prompt</span></div><small>Шууд хуулж биш, хоосон хэсгийг өөрийн баримтаар бөглөнө</small></div>
-        <pre><code>{prompt}</code></pre>
+        <div className="prompt-head">
+          <div>
+            <Sparkles size={17} />
+            <span>Дахин ашиглах prompt</span>
+          </div>
+          <small>Шууд хуулж биш, хоосон хэсгийг өөрийн баримтаар бөглөнө</small>
+        </div>
+        <pre>
+          <code>{prompt}</code>
+        </pre>
       </section>
 
       <section className="review-rules">
-        <div className="section-heading"><span>03</span><h2>AI-ийн үр дүнг шалгах 4 асуулт</h2></div>
+        <div className="section-heading">
+          <span>03</span>
+          <h2>AI-ийн үр дүнг шалгах 4 асуулт</h2>
+        </div>
         <ol>
-          <li><span>01</span><p><strong>Ажиллаж байна уу?</strong> Browser, test эсвэл compiler-оор нотолсон уу?</p></li>
-          <li><span>02</span><p><strong>Шаардлагатай нийцэж байна уу?</strong> Өгсөн хязгаарлалт бүр биелсэн үү?</p></li>
-          <li><span>03</span><p><strong>Би тайлбарлаж чадах уу?</strong> Мөр бүрийн үүрэг, trade-off ойлгомжтой юу?</p></li>
-          <li><span>04</span><p><strong>Аюулгүй юу?</strong> Нууц, өгөгдөл, edge case, зардалд эрсдэл нэмсэн үү?</p></li>
+          <li>
+            <span>01</span>
+            <p>
+              <strong>Ажиллаж байна уу?</strong> Browser, test эсвэл
+              compiler-оор нотолсон уу?
+            </p>
+          </li>
+          <li>
+            <span>02</span>
+            <p>
+              <strong>Шаардлагатай нийцэж байна уу?</strong> Өгсөн хязгаарлалт
+              бүр биелсэн үү?
+            </p>
+          </li>
+          <li>
+            <span>03</span>
+            <p>
+              <strong>Би тайлбарлаж чадах уу?</strong> Мөр бүрийн үүрэг,
+              trade-off ойлгомжтой юу?
+            </p>
+          </li>
+          <li>
+            <span>04</span>
+            <p>
+              <strong>Аюулгүй юу?</strong> Нууц, өгөгдөл, edge case, зардалд
+              эрсдэл нэмсэн үү?
+            </p>
+          </li>
         </ol>
       </section>
     </div>
@@ -347,47 +630,126 @@ function AssignmentSection({ lesson }: { lesson: Lesson }) {
   return (
     <div className="content-section assignment-section">
       <section className="deliverable-card">
-        <div className="deliverable-icon"><FileCheck2 size={24} /></div>
-        <div><span>ХҮЛЭЭЛГЭН ӨГӨХ ЗҮЙЛ</span><h2>{deliverable}</h2><p>Хугацаа: дараагийн хичээл эхлэхээс өмнө · GitHub холбоосоор</p></div>
+        <div className="deliverable-icon">
+          <FileCheck2 size={24} />
+        </div>
+        <div>
+          <span>ХҮЛЭЭЛГЭН ӨГӨХ ЗҮЙЛ</span>
+          <h2>{deliverable}</h2>
+          <p>Хугацаа: дараагийн хичээл эхлэхээс өмнө · GitHub холбоосоор</p>
+        </div>
       </section>
 
       <div className="assignment-grid">
         <section>
-          <div className="section-heading"><span>01</span><h2>Гүйцэтгэх дараалал</h2></div>
+          <div className="section-heading">
+            <span>01</span>
+            <h2>Гүйцэтгэх дараалал</h2>
+          </div>
           <div className="task-steps">
-            <div><span>1</span><p><strong>Тодорхойл.</strong> “Бэлэн болсон” гэж үзэх 3 шалгуураа бич.</p></div>
-            <div><span>2</span><p><strong>Гараар эхэл.</strong> Үндсэн шийдлийн эхний хувилбарыг AI-гүй хий.</p></div>
-            <div><span>3</span><p><strong>AI-тай сайжруул.</strong> Контексттэй prompt ашиглаж, diff-ийг мөр бүрээр нь унш.</p></div>
-            <div><span>4</span><p><strong>Нотол.</strong> Ажиллаж байгааг шалгаад commit, тайлбар, review тэмдэглэлээ өг.</p></div>
+            <div>
+              <span>1</span>
+              <p>
+                <strong>Тодорхойл.</strong> “Бэлэн болсон” гэж үзэх 3 шалгуураа
+                бич.
+              </p>
+            </div>
+            <div>
+              <span>2</span>
+              <p>
+                <strong>Гараар эхэл.</strong> Үндсэн шийдлийн эхний хувилбарыг
+                AI-гүй хий.
+              </p>
+            </div>
+            <div>
+              <span>3</span>
+              <p>
+                <strong>AI-тай сайжруул.</strong> Контексттэй prompt ашиглаж,
+                diff-ийг мөр бүрээр нь унш.
+              </p>
+            </div>
+            <div>
+              <span>4</span>
+              <p>
+                <strong>Нотол.</strong> Ажиллаж байгааг шалгаад commit, тайлбар,
+                review тэмдэглэлээ өг.
+              </p>
+            </div>
           </div>
         </section>
 
         <aside className="definition-card">
           <span>DEFINITION OF DONE</span>
           <ul>
-            <li><Check size={13} />{lesson.summary}</li>
-            <li><Check size={13} />Алдаа, хоосон ба loading төлөвийг шалгасан</li>
-            <li><Check size={13} />AI-ийн санал бүрийг хүлээн авсан шалтгаантай</li>
-            <li><Check size={13} />Өөрийн кодыг аман тайлбарлаж чадна</li>
+            <li>
+              <Check size={13} />
+              {lesson.summary}
+            </li>
+            <li>
+              <Check size={13} />
+              Алдаа, хоосон ба loading төлөвийг шалгасан
+            </li>
+            <li>
+              <Check size={13} />
+              AI-ийн санал бүрийг хүлээн авсан шалтгаантай
+            </li>
+            <li>
+              <Check size={13} />
+              Өөрийн кодыг аман тайлбарлаж чадна
+            </li>
           </ul>
         </aside>
       </div>
 
       <section className="rubric-section">
-        <div className="section-heading"><span>02</span><h2>Үнэлгээний rubric</h2><small>Нийт 100 оноо</small></div>
+        <div className="section-heading">
+          <span>02</span>
+          <h2>Үнэлгээний rubric</h2>
+          <small>Нийт 100 оноо</small>
+        </div>
         <div className="rubric-table">
-          <div className="rubric-row"><strong>Ойлголт ба тайлбар</strong><p>Үндсэн ойлголт, шийдвэр, trade-off-оо өөрийн үгээр тайлбарласан</p><b>40</b></div>
-          <div className="rubric-row"><strong>Хэрэгжүүлэлт</strong><p>Шалгуур хангасан, ажилладаг, цэгцтэй шийдэл болон тестийн нотолгоо</p><b>35</b></div>
-          <div className="rubric-row"><strong>AI ажлын урсгал</strong><p>Контекст, prompt, diff review, хүлээн авсан/татгалзсан шалтгааны тэмдэглэл</p><b>25</b></div>
+          <div className="rubric-row">
+            <strong>Ойлголт ба тайлбар</strong>
+            <p>
+              Үндсэн ойлголт, шийдвэр, trade-off-оо өөрийн үгээр тайлбарласан
+            </p>
+            <b>40</b>
+          </div>
+          <div className="rubric-row">
+            <strong>Хэрэгжүүлэлт</strong>
+            <p>
+              Шалгуур хангасан, ажилладаг, цэгцтэй шийдэл болон тестийн нотолгоо
+            </p>
+            <b>35</b>
+          </div>
+          <div className="rubric-row">
+            <strong>AI ажлын урсгал</strong>
+            <p>
+              Контекст, prompt, diff review, хүлээн авсан/татгалзсан шалтгааны
+              тэмдэглэл
+            </p>
+            <b>25</b>
+          </div>
         </div>
       </section>
 
       <section className="exit-ticket">
-        <div className="section-heading"><span>03</span><h2>Exit ticket</h2></div>
+        <div className="section-heading">
+          <span>03</span>
+          <h2>Exit ticket</h2>
+        </div>
         <div className="exit-grid">
-          <p><span>01</span>Өнөөдрийн хамгийн чухал ойлголтыг нэг өгүүлбэрээр тайлбарла.</p>
-          <p><span>02</span>Ямар шийдвэр дээр AI-ийн саналыг өөрчилсөн эсвэл татгалзсан бэ? Яагаад?</p>
-          <p><span>03</span>Дахин хийвэл хамгийн эхэнд юуг өөрөөр хийх вэ?</p>
+          <p>
+            <span>01</span>Өнөөдрийн хамгийн чухал ойлголтыг нэг өгүүлбэрээр
+            тайлбарла.
+          </p>
+          <p>
+            <span>02</span>Ямар шийдвэр дээр AI-ийн саналыг өөрчилсөн эсвэл
+            татгалзсан бэ? Яагаад?
+          </p>
+          <p>
+            <span>03</span>Дахин хийвэл хамгийн эхэнд юуг өөрөөр хийх вэ?
+          </p>
         </div>
       </section>
     </div>
@@ -401,6 +763,7 @@ export default function CourseApp() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const lesson = lessons[selectedId - 1] ?? lessons[0];
 
   useEffect(() => {
@@ -413,8 +776,21 @@ export default function CourseApp() {
   }, []);
 
   useEffect(() => {
+    try {
+      setSidebarCollapsed(
+        window.localStorage.getItem("ai-frontend-sidebar-collapsed") === "true",
+      );
+    } catch {
+      // Use the expanded sidebar when browser storage is unavailable.
+    }
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLocaleLowerCase() === "k") {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        event.key.toLocaleLowerCase() === "k"
+      ) {
         event.preventDefault();
         setSearchOpen(true);
       }
@@ -442,7 +818,10 @@ export default function CourseApp() {
       if (next.has(lesson.id)) next.delete(lesson.id);
       else next.add(lesson.id);
       try {
-        window.localStorage.setItem("ai-frontend-completed", JSON.stringify([...next]));
+        window.localStorage.setItem(
+          "ai-frontend-completed",
+          JSON.stringify([...next]),
+        );
       } catch {
         // Keep in-memory progress when browser storage is unavailable.
       }
@@ -452,19 +831,67 @@ export default function CourseApp() {
 
   const isComplete = completed.has(lesson.id);
 
+  const toggleSidebar = () => {
+    setSidebarCollapsed((current) => {
+      const next = !current;
+      try {
+        window.localStorage.setItem(
+          "ai-frontend-sidebar-collapsed",
+          String(next),
+        );
+      } catch {
+        // Keep the preference in memory when browser storage is unavailable.
+      }
+      return next;
+    });
+  };
+
   return (
-    <main className="course-app">
-      <Sidebar lesson={lesson} completed={completed} open={menuOpen} onClose={() => setMenuOpen(false)} onSelect={selectLesson} />
+    <main
+      className={`course-app ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}
+    >
+      <Sidebar
+        lesson={lesson}
+        completed={completed}
+        open={menuOpen}
+        collapsed={sidebarCollapsed}
+        onClose={() => setMenuOpen(false)}
+        onToggleCollapse={toggleSidebar}
+        onSelect={selectLesson}
+      />
 
       <section className="lesson-main">
         <header className="course-topbar">
           <div className="topbar-left">
-            <button className="menu-button" onClick={() => setMenuOpen(true)} aria-label="Хичээлийн цэс нээх"><Menu size={20} /></button>
-            <div><span>{lesson.week}-Р ДОЛОО ХОНОГ · {lesson.module.toLocaleUpperCase("mn")}</span><small>Хичээл {String(lesson.id).padStart(2, "0")} / 48</small></div>
+            <button
+              className="menu-button"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Хичээлийн цэс нээх"
+            >
+              <Menu size={20} />
+            </button>
+            <div>
+              <span>
+                {lesson.week}-Р ДОЛОО ХОНОГ ·{" "}
+                {lesson.module.toLocaleUpperCase("mn")}
+              </span>
+              <small>Хичээл {String(lesson.id).padStart(2, "0")} / 48</small>
+            </div>
           </div>
           <div className="topbar-actions">
-            <button className="search-trigger" onClick={() => setSearchOpen(true)}><Search size={16} /><span>Хичээл хайх</span><kbd>⌘ K</kbd></button>
-            <button className={`complete-button ${isComplete ? "done" : ""}`} onClick={toggleComplete} aria-pressed={isComplete}>
+            <button
+              className="search-trigger"
+              onClick={() => setSearchOpen(true)}
+            >
+              <Search size={16} />
+              <span>Хичээл хайх</span>
+              <kbd>⌘ K</kbd>
+            </button>
+            <button
+              className={`complete-button ${isComplete ? "done" : ""}`}
+              onClick={toggleComplete}
+              aria-pressed={isComplete}
+            >
               {isComplete ? <CheckCircle2 size={17} /> : <Circle size={17} />}
               <span>{isComplete ? "Дууссан" : "Дууссанд тэмдэглэх"}</span>
             </button>
@@ -474,24 +901,49 @@ export default function CourseApp() {
         <article className="lesson-article">
           <header className="lesson-header">
             <div className="lesson-kicker">
-              <span className={`kind-badge ${lesson.kind}`}>{lessonKindLabel[lesson.kind]}</span>
+              <span className={`kind-badge ${lesson.kind}`}>
+                {lessonKindLabel[lesson.kind]}
+              </span>
               <span>ХИЧЭЭЛ {String(lesson.id).padStart(2, "0")}</span>
             </div>
             <div className="lesson-title-row">
-              <div><h1>{lesson.title}</h1><p>{lesson.summary}.</p></div>
-              <div className="duration-badge"><strong>3</strong><span>ЦАГ</span><small>180 минут</small></div>
+              <div>
+                <h1>{lesson.title}</h1>
+                <p>{lesson.summary}.</p>
+              </div>
+              <div className="duration-badge">
+                <strong>3</strong>
+                <span>ЦАГ</span>
+                <small>180 минут</small>
+              </div>
             </div>
             <div className="lesson-meta">
-              <span><Clock3 size={15} /> 3 цаг</span>
-              <span><BookOpen size={15} /> {lesson.module}</span>
-              <span><Code2 size={15} /> Гардан дадлага</span>
-              {lesson.kind === "ai" && <span className="ai-meta"><Sparkles size={15} /> AI лаборатори</span>}
+              <span>
+                <Clock3 size={15} /> 3 цаг
+              </span>
+              <span>
+                <BookOpen size={15} /> {lesson.module}
+              </span>
+              <span>
+                <Code2 size={15} /> Гардан дадлага
+              </span>
+              {lesson.kind === "ai" && (
+                <span className="ai-meta">
+                  <Sparkles size={15} /> AI лаборатори
+                </span>
+              )}
             </div>
           </header>
 
           <nav className="section-tabs" aria-label="Хичээлийн хэсэг">
             {sectionLabels.map((item) => (
-              <button className={section === item.id ? "active" : ""} onClick={() => setSection(item.id)} key={item.id}>{item.label}</button>
+              <button
+                className={section === item.id ? "active" : ""}
+                onClick={() => setSection(item.id)}
+                key={item.id}
+              >
+                {item.label}
+              </button>
             ))}
           </nav>
 
@@ -500,17 +952,37 @@ export default function CourseApp() {
           {section === "assignment" && <AssignmentSection lesson={lesson} />}
 
           <footer className="lesson-footer-nav">
-            <button disabled={lesson.id === 1} onClick={() => selectLesson(lesson.id - 1)}>
-              <ChevronLeft size={17} /><span><small>ӨМНӨХ ХИЧЭЭЛ</small>{lesson.id > 1 ? lessons[lesson.id - 2].title : "Эхлэл"}</span>
+            <button
+              disabled={lesson.id === 1}
+              onClick={() => selectLesson(lesson.id - 1)}
+            >
+              <ChevronLeft size={17} />
+              <span>
+                <small>ӨМНӨХ ХИЧЭЭЛ</small>
+                {lesson.id > 1 ? lessons[lesson.id - 2].title : "Эхлэл"}
+              </span>
             </button>
-            <button disabled={lesson.id === 48} onClick={() => selectLesson(lesson.id + 1)}>
-              <span><small>ДАРААГИЙН ХИЧЭЭЛ</small>{lesson.id < 48 ? lessons[lesson.id].title : "Төгсөв"}</span><ChevronRight size={17} />
+            <button
+              disabled={lesson.id === 48}
+              onClick={() => selectLesson(lesson.id + 1)}
+            >
+              <span>
+                <small>ДАРААГИЙН ХИЧЭЭЛ</small>
+                {lesson.id < 48 ? lessons[lesson.id].title : "Төгсөв"}
+              </span>
+              <ChevronRight size={17} />
             </button>
           </footer>
         </article>
       </section>
 
-      <SearchDialog open={searchOpen} query={searchQuery} onQueryChange={setSearchQuery} onClose={() => setSearchOpen(false)} onSelect={selectLesson} />
+      <SearchDialog
+        open={searchOpen}
+        query={searchQuery}
+        onQueryChange={setSearchQuery}
+        onClose={() => setSearchOpen(false)}
+        onSelect={selectLesson}
+      />
     </main>
   );
 }
