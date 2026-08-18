@@ -10,6 +10,11 @@ export type Lesson = {
   kind: LessonKind;
 };
 
+export const LESSON_DURATION_MINUTES = 120;
+export const LESSONS_PER_WEEK = 4;
+export const WEEK_DURATION_HOURS =
+  (LESSON_DURATION_MINUTES * LESSONS_PER_WEEK) / 60;
+
 const rawLessons: Omit<Lesson, "week">[] = [
   {
     id: 1,
@@ -486,6 +491,9 @@ export const lessons: Lesson[] = rawLessons.map((lesson) => ({
   ...lesson,
   week: Math.ceil(lesson.id / 4),
 }));
+
+export const COURSE_DURATION_HOURS =
+  (lessons.length * LESSON_DURATION_MINUTES) / 60;
 
 export const weekModules = Array.from({ length: 12 }, (_, index) => {
   const week = index + 1;

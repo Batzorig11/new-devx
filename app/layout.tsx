@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Noto_Sans, Noto_Sans_Mono } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
@@ -38,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = "AI-Native Frontend Engineering";
   const description =
-    "48 хичээл, 12 долоо хоног, 144 цагийн AI-native frontend инженерчлэлийн Монгол курс.";
+    "48 хичээл, 12 долоо хоног, 96 цагийн AI-native frontend инженерчлэлийн багшийн дэлгэрэнгүй lecture guide.";
   const socialImage = new URL("/og.png", metadataBase).toString();
 
   return {
@@ -69,7 +70,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="mn"
