@@ -8,7 +8,7 @@ export type DetailedScheduleItem = {
 
 export type CopyBlock = {
   title: string;
-  language: "bash" | "html" | "css" | "text" | "prompt";
+  language: "bash" | "powershell" | "html" | "css" | "text" | "prompt";
   code: string;
   note?: string;
 };

@@ -1,9 +1,31 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# DEVX Project Instructions
 
-# This is NOT the Next.js you know
+DEVX is an AI-Native Frontend Engineering curriculum website.
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+The primary use case is classroom teaching:
+a teacher should be able to open any lesson and teach directly from the website.
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+Before modifying lesson pages, curriculum content, or teaching-related UI,
+read:
 
-<!-- END:nextjs-agent-rules -->
+docs/teaching-console-spec.md
+
+Treat that document as the source of truth for:
+
+- lesson structure
+- Teacher Mode
+- Projector Mode
+- teaching content depth
+- AI Lab philosophy
+- curriculum continuity
+- classroom UX
+
+Do not change the existing 48-lesson curriculum progression unless explicitly requested.
+
+For implementation tasks:
+
+- inspect existing architecture first
+- reuse existing components
+- keep lesson content structured and reusable
+- avoid hardcoding large lessons directly inside React components
+- run build/lint after meaningful changes

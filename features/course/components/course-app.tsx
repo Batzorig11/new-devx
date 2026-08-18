@@ -7,12 +7,15 @@ import { LessonHeader } from "./lesson-header";
 import { LessonNavigation } from "./lesson-navigation";
 import { SearchDialog } from "./search-dialog";
 import { SectionTabs } from "./section-tabs";
+import { ReferenceLesson } from "../reference-lessons/components/reference-lesson";
+import { referenceLessonById } from "../reference-lessons/data";
 import { AssignmentSection } from "./sections/assignment-section";
 import { MaterialsSection } from "./sections/materials-section";
 import { PlanSection } from "./sections/plan-section";
 
 export function CourseApp() {
   const course = useCourse();
+  const referenceLesson = referenceLessonById[course.lesson.id];
 
   return (
     <main className={`course-app ${course.sidebarCollapsed ? "sidebar-collapsed" : ""}`}>
@@ -37,11 +40,16 @@ export function CourseApp() {
 
         <article className="lesson-article">
           <LessonHeader lesson={course.lesson} />
-          <SectionTabs activeSection={course.section} onSelect={course.setSection} />
-
-          {course.section === "plan" && <PlanSection lesson={course.lesson} />}
-          {course.section === "materials" && <MaterialsSection lesson={course.lesson} />}
-          {course.section === "assignment" && <AssignmentSection lesson={course.lesson} />}
+          {referenceLesson ? (
+            <ReferenceLesson lesson={referenceLesson} />
+          ) : (
+            <>
+              <SectionTabs activeSection={course.section} onSelect={course.setSection} />
+              {course.section === "plan" && <PlanSection lesson={course.lesson} />}
+              {course.section === "materials" && <MaterialsSection lesson={course.lesson} />}
+              {course.section === "assignment" && <AssignmentSection lesson={course.lesson} />}
+            </>
+          )}
 
           <LessonNavigation lesson={course.lesson} onSelect={course.selectLesson} />
         </article>
