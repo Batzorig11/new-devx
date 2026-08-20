@@ -951,18 +951,6 @@
 }
 
 @media (min-width: 821px) {
-  .course-app:has(.reference-lesson.projector-mode) {
-    grid-template-columns: 0 minmax(0, 1fr);
-  }
-  .course-app:has(.reference-lesson.projector-mode) .course-sidebar {
-    width: 0;
-    padding-right: 0;
-    padding-left: 0;
-    overflow: hidden;
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-  }
   .course-app:has(.reference-lesson.projector-mode) .lesson-article {
     width: min(1180px, calc(100% - 80px));
   }
