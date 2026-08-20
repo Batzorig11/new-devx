@@ -19,7 +19,7 @@ import { LessonWrapUp } from "./lesson-wrap-up";
 const LESSON_MODE_STORAGE_KEY = "devx-classroom-view";
 
 export function ReferenceLesson({ lesson }: { lesson: ReferenceLessonData }) {
-  const [mode, setMode] = useState<LessonMode>("teacher");
+  const [mode, setMode] = useState<LessonMode>("projector");
   const [activeId, setActiveId] = useState<ReferenceLessonSectionId>("overview");
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export function ReferenceLesson({ lesson }: { lesson: ReferenceLessonData }) {
         const storedMode = window.localStorage.getItem(LESSON_MODE_STORAGE_KEY);
         if (storedMode === "teacher" || storedMode === "projector") setMode(storedMode);
       } catch {
-        // Keep Teacher Mode when browser storage is unavailable.
+        // Keep Projector Mode when browser storage is unavailable.
       }
     }, 0);
 
