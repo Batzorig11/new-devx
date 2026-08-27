@@ -38,7 +38,7 @@ export const lesson08Reference: ReferenceLesson = {
     ],
     outcomes: [
       "Нэг тодорхой бус prompt-д ямар context дутсаныг ангилж чадна.",
-      "CSS selector-ийн зөрүүтэй bug-д нотолгоонд тулгуурласан, бүтэцтэй prompt бичнэ.",
+      "Flexbox layout-ийн overflow bug-д нотолгоонд тулгуурласан, бүтэцтэй prompt бичнэ.",
       "AI-аар өөрчлөлт шууд хийлгэхийн өмнө hypothesis болон test-ийн төлөвлөгөө гаргуулна.",
       "DevTools-ийн хэмжилт болон Git diff-ээр AI-ийн дүгнэлт, засварыг шалгаж баталгаажуулна.",
       "Acceptance criteria болон regression test хангагдсан үед л эцсийн шийдвэр гаргана.",
@@ -390,60 +390,61 @@ export const lesson08Reference: ReferenceLesson = {
     ],
   },
   guidedPractice: {
-    title: "Invalid input-ийн border яагаад улаан болохгүйг оношлох",
+    title: "Desktop дээр зөв card яагаад 360px-д overflow үүсгэж байгааг оношлох",
     duration: "16 минут",
     goal:
-      "Сурагч normal болон invalid хоёр input-ийг харьцуулж, `aria-invalid` төлөвийн улаан border яагаад саарал rule-д дарагдсаныг DevTools-оор баримтжуулна. Дараа нь specificity ба source order-т тулгуурласан prompt бичиж, AI-ийн hypothesis-ийг нэг selector test-ээр шалгаад, state-ийн ажиллагааг эвдэхгүй хамгийн бага засвар хийнэ.",
+      "Сурагч Flexbox student card-ийг 720px болон 360px viewport дээр харьцуулж, зөвхөн нарийн дэлгэцэд үүссэн horizontal overflow-ийг runtime evidence-ээр тодорхойлно. Дараа нь AI-тай нэг property-ийн hypothesis/test хийж, desktop layout-ийг эвдэхгүй responsive засварыг баталгаажуулна.",
     starterCode: [
-      { title: "index.html", language: "html", code: "<link rel=\"stylesheet\" href=\"styles.css\">\n\n<form class=\"form-card\">\n  <label for=\"name\">Нэр</label>\n  <input class=\"form-field\" id=\"name\" value=\"Ану\">\n\n  <label for=\"email\">Имэйл</label>\n  <input\n    class=\"form-field\"\n    id=\"email\"\n    type=\"email\"\n    value=\"буруу-имэйл\"\n    aria-invalid=\"true\"\n    aria-describedby=\"email-error\"\n  >\n  <p class=\"error-message\" id=\"email-error\">\n    Зөв имэйл хаяг оруулна уу.\n  </p>\n\n  <button type=\"submit\">Хадгалах</button>\n</form>" },
-      { title: "styles.css", language: "css", code: ".form-field {\n  box-sizing: border-box;\n  display: block;\n  width: 100%;\n  padding: 10px;\n  border: 2px solid;\n}\n\n.form-field[aria-invalid=\"true\"] {\n  border-color: #dc2626;\n}\n\n.form-card .form-field {\n  border-color: #d1d5db;\n}\n\n.error-message { color: #dc2626; }\n\n:focus-visible {\n  outline: 3px solid #f59e0b;\n  outline-offset: 2px;\n}" },
-      { title: "lesson-08-prompt-log.md", language: "text", code: "# Хичээл 08 — Prompt Debug Log\n\n## Ажиглагдсан үр дүн\n- Normal input border:\n- Invalid input border:\n\n## Хүлээгдэж буй үр дүн\n\n## AI ашиглахаас өмнөх нотолгоо\n- Invalid input-ийн attribute:\n- Өрсөлдөж буй selector-ууд:\n- Specificity ба source order:\n- Styles / Computed:\n\n## Миний hypothesis\n\n## Миний зургаан талбарт prompt\n\n## AI-ийн hypothesis ба урьдчилсан таамаг\n\n## Нэг selector test / бодит үр дүн\n\n## Эцсийн шийдвэр ба source patch\n\n## Regression test ба Git diff\n" },
+      { title: "index.html", language: "html", code: "<link rel=\"stylesheet\" href=\"styles.css\">\n\n<article class=\"student-card\">\n  <div class=\"avatar\" aria-hidden=\"true\">АН</div>\n\n  <div class=\"student-info\">\n    <h2>Ану Наран</h2>\n    <p>Frontend инженерчлэл · 8-р хичээл</p>\n  </div>\n\n  <a class=\"profile-button\" href=\"#profile\">\n    Профайл харах\n  </a>\n</article>" },
+      { title: "styles.css", language: "css", code: ".student-card {\n  box-sizing: border-box;\n  display: flex;\n  align-items: center;\n  gap: 16px;\n  flex-wrap: nowrap;\n  width: 100%;\n  max-width: 720px;\n  padding: 20px;\n  border: 2px solid #ddd6fe;\n}\n\n.avatar {\n  flex: 0 0 64px;\n  height: 64px;\n  line-height: 64px;\n  text-align: center;\n  border-radius: 50%;\n  background: #ede9fe;\n}\n\n.student-info { flex: 1 0 180px; }\n.student-info h2,\n.student-info p { margin: 0; }\n\n.profile-button {\n  flex: 0 0 auto;\n  margin-left: auto;\n}\n\n.profile-button:focus-visible {\n  outline: 3px solid #f59e0b;\n  outline-offset: 3px;\n}" },
+      { title: "lesson-08-prompt-log.md", language: "text", code: "# Хичээл 08 — Flexbox Prompt Debug Log\n\n## Ажиглагдсан үр дүн\n- 720px viewport:\n- 360px viewport:\n\n## Хүлээгдэж буй үр дүн\n\n## AI ашиглахаас өмнөх нотолгоо\n- Direct flex children:\n- Computed flex-wrap:\n- Card clientWidth / scrollWidth:\n- Item-үүдийн flex утга:\n\n## Миний hypothesis\n\n## Миний зургаан талбарт prompt\n\n## AI-ийн hypothesis ба урьдчилсан таамаг\n\n## Нэг property test / бодит үр дүн\n\n## Эцсийн шийдвэр ба source patch\n\n## 720px / 360px regression ба Git diff\n" },
     ],
     instructions: [
-      "Гурван file-ийг үүсгээд index.html-ийг browser дээр нээ. Normal болон `aria-invalid=\"true\"` input хоёул саарал border-тэй байгааг батал.",
-      "AI ашиглахаас өмнө invalid input-ийг inspect хий. Styles хэсгээс `.form-field[aria-invalid=\"true\"]` болон `.form-card .form-field` rule хоёул match болсон, улаан `border-color` дарагдсан, Computed border саарал байгааг prompt log-д бич.",
-      "Normal input-ийг мөн inspect хийж baseline ав. Хүлээгдэж буй үр дүнгээ state бүрээр бич: normal саарал, invalid улаан, error message харагдана, keyboard focus тод байна.",
-      "Хоёр selector-ийн specificity-г өөрөө тооцоод, source order ямар үед шийдвэрлэж байгааг тайлбарласан нэг hypothesis бич. Үүнийг одоохондоо баримт бус таамаг гэж тэмдэглэ.",
-      "Task, Context, Constraints, Input, Output, Acceptance Criteria гэсэн зургаан гарчигтай prompt бич. AI-аас өөрийн hypothesis-ийг шүүмжилж, нэг буцааж болох selector test санал болгохыг хүс; code өөрчлөхийг хоригло.",
-      "AI-ийн хариултаас шалгаж болох нэг hypothesis сонго. Test хийхээс өмнө normal border, invalid border, error message, focus-ийн хүлээгдэж буй үр дүнг тус тусад нь бич.",
-      "DevTools-ийн Styles хэсэгт `.form-card .form-field` selector-ийг түр `.form-field` болгох нэг test хий. Normal болон invalid input-ийн Computed border-color-ийг дахин хэмж.",
-      "Invalid input улаан, normal input саарал болсон бол hypothesis-ийг хүлээн авч, styles.css-д selector-ийн хамгийн бага patch хий. Save, Refresh хийж үр дүн source code-оос хадгалагдсаныг батал.",
-      "Tab key ашиглан хоёр input болон button-ийн focus-ийг шалга. Label холбоос, `aria-invalid`, `aria-describedby`, error message болон HTML өөрчлөгдөөгүйг regression test-ээр батал.",
-      "`git diff`-ийг уншиж, зөвхөн нэг CSS selector болон prompt log өөрчлөгдсөнийг нотолгоотой дүгнэ.",
+      "Гурван file-ийг үүсгээд index.html-ийг browser дээр нээ. DevTools-ийн responsive viewport-ийг эхлээд 720px болго; avatar, мэдээлэл, link нэг мөрөнд зөв байрласныг baseline болгон тэмдэглэ.",
+      "Viewport-ийг 360px болго. Profile link card-аас хэтэрсэн эсвэл page horizontal scroll-той болсныг ажиглаж, 720px-д байгаагүй bug зөвхөн narrow нөхцөлд гарсныг бич.",
+      "`.student-card`-ийг inspect хийж direct flex children-ийг нэрлэ. Computed `flex-wrap: nowrap`, item бүрийн `flex-shrink: 0`, мөн `$0.scrollWidth > $0.clientWidth` эсэхийг Console-оор шалгаж prompt log-д бич.",
+      "Хүлээгдэж буй үр дүнг хоёр viewport-оор тодорхойл: 720px-д нэг мөр; 360px-д link дараагийн мөрөнд орж болно, гэхдээ card overflow үүсгэхгүй; avatar, текст, keyboard focus хэвээр байна.",
+      "AI ашиглахаас өмнө `nowrap` болон shrink хийхгүй item-үүд нэг мөрөнд багтахгүй байна гэсэн өөрийн hypothesis бич. Үүнийг хараахан батлагдаагүй гэж тэмдэглэ.",
+      "Task, Context, Constraints, Input, Output, Acceptance Criteria гэсэн зургаан гарчигтай prompt бич. AI-аас өөрийн hypothesis-ийг шүүмжилж, зөвхөн нэг CSS property өөрчлөх буцааж болох test санал болгохыг хүс; code өөрчлөхийг хоригло.",
+      "AI-ийн нэг hypothesis сонгоод test-ээс өмнө 360px layout, `scrollWidth/clientWidth`, 720px layout, link focus-ийн хүлээгдэж буй үр дүнг бич.",
+      "DevTools-ийн Styles хэсэгт `.student-card`-ийн `flex-wrap: nowrap`-ийг түр `flex-wrap: wrap` болгох нэг test хий. 360px болон 720px дээр бодит үр дүнг дахин хэмж.",
+      "360px-д overflow арилж, 720px layout хэвээр бол hypothesis-ийг хүлээн авч styles.css-д зөвхөн property value-г зас. Save, Refresh хийж source code-оос үр дүн хадгалагдсаныг батал.",
+      "Avatar 64px хэвээр, бүх текст харагдана, profile link Tab key-ээр focus авна, HTML өөрчлөгдөөгүйг regression test-ээр шалгаад `git diff`-ээ дүгнэ.",
     ],
     constraints: [
-      "AI ашиглахаас өмнө normal ба invalid хоёр төлөвийн Computed border, matching selector, winner болон loser-ийг заавал бичсэн байна.",
-      "Өөрийн hypothesis-ийг AI-ийн хариултаас өмнө бичнэ. AI-аас нэг hypothesis болон нэг test л авна.",
-      "Нэг удаад зөвхөн нэг selector өөрчилнө; declaration, HTML, attribute-ийг зэрэг өөрчлөхгүй.",
-      "Эцсийн засварыг зөвхөн styles.css-д хийнэ. `!important`, inline style, HTML rewrite, accessibility attribute устгах арга ашиглахгүй.",
+      "AI ашиглахаас өмнө 720px болон 360px evidence, Computed `flex-wrap`, `clientWidth`, `scrollWidth`-ийг заавал бичсэн байна.",
+      "Өөрийн hypothesis-ийг AI-ийн хариултаас өмнө бичнэ. AI-аас нэг hypothesis болон нэг-property test л авна.",
+      "Нэг удаад зөвхөн `flex-wrap` value-г өөрчилнө; item-ийн width, flex basis, content, HTML-ийг зэрэг өөрчлөхгүй.",
+      "`overflow:hidden`, absolute positioning, fixed pixel offset, text нуух, font багасгах, HTML rewrite ашиглахгүй.",
       "AI-ийн урьдчилан таамагласан үр дүнг бодит үр дүнгийн хэсэгт хуулж болохгүй.",
       "Refresh хийсний дараа source patch болон Acceptance Criteria pass болсон байна.",
       "Prompt болон log-д credentials, private URL, хувийн мэдээлэл оруулахгүй.",
     ],
     hints: [
-      "`.form-field[aria-invalid=\"true\"]` нь нэг class + нэг attribute; `.form-card .form-field` нь хоёр class агуулна.",
-      "Specificity тэнцсэн үед source code-д дараа бичигдсэн matching declaration ялна.",
-      "Base rule-ийн specificity-г state rule-тэй өрсөлдөх хэмжээнд өсгөх шаардлагатай эсэхийг асуу.",
-      "Normal ба invalid state-ийг хоёуланг шалгахгүй бол нэгийг засахдаа нөгөөг эвдсэн эсэхийг мэдэхгүй.",
+      "Энэ нь Хичээл 09-ийн preview: Flexbox property-ууд starter code-д өгөгдсөн. Энэ удаа property цээжлэх бус, behavior-ийг баримтаар оношлоход төвлөр.",
+      "`flex-wrap: nowrap` үед flex item-үүд шинэ мөрөнд шилжихгүй.",
+      "Avatar `flex: 0 0 64px`, info `flex: 1 0 180px`, link `flex: 0 0 auto` тул эдгээрийн shrink утга 0 байна.",
+      "360px-д item-үүдийн үндсэн өргөн, хоёр gap, card-ийн padding нийлээд available content width-ээс их байж болно.",
+      "`scrollWidth > clientWidth` нь content тухайн element-ийн харагдах өргөнөөс хэтэрсний runtime нотолгоо.",
     ],
     expectedResult: [
-      "AI ашиглахаас өмнөх prompt log-д normal болон invalid state-ийн Computed border, matching rules, winner/loser нотолгоо байна.",
-      "Хоёр selector 0-2-0 specificity-тэй тэнцүү бөгөөд дараа бичигдсэн `.form-card .form-field` саарал өнгөөр ялсныг тайлбарласан.",
-      "Зургаан талбарт prompt нь source code, state бүрийн нотолгоо, нэг-test хил хязгаар, хэмжиж болох Acceptance Criteria агуулсан.",
+      "AI ашиглахаас өмнөх prompt log-д 720px pass, 360px fail, Computed `nowrap`, `scrollWidth > clientWidth` нотолгоо байна.",
+      "Direct flex children болон тэдгээрийн shrink хийхгүй flex утгуудыг source code-оос зөв тодорхойлсон.",
+      "Зургаан талбарт prompt нь хоёр viewport-ийн evidence, нэг-property хил хязгаар, хэмжиж болох Acceptance Criteria агуулсан.",
       "AI-ийн hypothesis, test-ээс өмнөх дөрвөн урьдчилсан таамаг, DevTools-ийн бодит үр дүн тусдаа байна.",
-      "Selector-ийг түр `.form-field` болгоход normal input саарал, invalid input улаан болсон.",
-      "Source patch-ийн дараа refresh хийхэд state өнгөнүүд хадгалагдаж, label, error message, accessibility attribute, keyboard focus regression test pass болсон.",
-      "Git diff зөвхөн нэг selector-ийн засвар болон prompt log-ийн өөрчлөлтийг харуулсан.",
+      "`flex-wrap: wrap` түр test-ийн дараа 360px-д `scrollWidth <= clientWidth`, link дараагийн мөрөнд; 720px-д нэг мөр хэвээр болсон.",
+      "Source patch-ийн дараа refresh хийхэд layout хадгалагдаж, avatar, content, keyboard focus regression test pass болсон.",
+      "Git diff зөвхөн `nowrap` → `wrap` өөрчлөлт болон prompt log-ийг харуулсан.",
     ],
     solutionCode: [
-      { title: "Хамгийн бага source patch", language: "css", code: ".form-field[aria-invalid=\"true\"] {\n  border-color: #dc2626;\n}\n\n.form-field {\n  border-color: #d1d5db;\n}" },
-      { title: "Багшийн шийдвэрийн хураангуй жишээ", language: "text", code: "Observed: normal ба invalid input хоёул rgb(209, 213, 219) border-тэй.\nEvidence: хоёр rule хоёул match; invalid улаан declaration crossed out.\nHypothesis: selector-ууд 0-2-0 specificity-тэй тэнцүү тул доорх base rule ялж байна.\nPrediction: base selector-ийг .form-field (0-1-0) болговол normal саарал, invalid улаан болно.\nTest: DevTools-д .form-card .form-field → .form-field гэж түр өөрчлөв.\nActual: normal rgb(209, 213, 219); invalid rgb(220, 38, 38).\nDecision: Хүлээн авсан — хоёр state урьдчилсан таамагтай таарсан.\nRegression: labels, error message, aria attributes, focus хэвээр.\nDiff: styles.css-д нэг selector өөрчлөгдсөн." },
+      { title: "Хамгийн бага source patch", language: "css", code: ".student-card {\n  flex-wrap: wrap;\n}" },
+      { title: "Багшийн шийдвэрийн хураангуй жишээ", language: "text", code: "Observed: 720px-д нэг мөр pass; 360px-д profile link хэтэрч scrollWidth > clientWidth.\nEvidence: .student-card display:flex, flex-wrap:nowrap; гурван direct child shrink хийхгүй.\nHypothesis: nowrap бүх item-ийг нэг flex line-д барьж horizontal overflow үүсгэж байна.\nPrediction: wrap болговол 360px-д link шинэ мөрөнд орж overflow арилна; 720px нэг мөр хэвээр.\nTest: DevTools-д flex-wrap:nowrap → wrap гэж түр өөрчлөв.\nActual: 360px scrollWidth <= clientWidth; 720px layout өөрчлөгдөөгүй.\nDecision: Хүлээн авсан — хоёр viewport урьдчилсан таамагтай таарсан.\nRegression: avatar 64px; бүх text харагдсан; link focus visible.\nDiff: styles.css-д нэг property value өөрчлөгдсөн." },
     ],
     stretchTask:
-      "AI-аас invalid state rule-ийг file-ийн доод хэсэгт зөөх өөр шийдэл асуу. Үүнийг хэрэгжүүлэхгүйгээр source order-т түшиглэсэн хувилбарыг base selector-ийн specificity бууруулсан засвартай харьцуулж, аль нь state rule нэмэгдэхэд тогтвортойг тайлбарла.",
+      "AI-аас `flex-shrink` ашиглан бүх item-ийг нэг мөрөнд үлдээх өөр санал ав. Үүнийг хэрэгжүүлэхгүйгээр info-ийн 180px minimum, text readability, button visibility гэсэн Acceptance Criteria-тай тулгаж, wrap хийх шийдэл яагаад илүү тохиромжтой эсвэл тохиромжгүйг нотолгоотой бич.",
     debriefQuestions: [
-      { question: "Хоёр selector харагдахдаа өөр боловч яагаад specificity нь тэнцсэн бэ?", answer: "Attribute selector болон class selector хоёул specificity-ийн нэг class түвшний жинтэй. Тиймээс class + attribute болон class + class хоёул 0-2-0 болсон." },
-      { question: "Засварын дараа source order яагаад invalid өнгийг шийдэхээ больсон бэ?", answer: "Invalid state selector 0-2-0, base selector 0-1-0 болсон тул state rule specificity-ээр илүү хүчтэй. Source order зөвхөн specificity тэнцсэн үед шийднэ." },
+      { question: "Desktop pass болсон нь layout бүх viewport-д зөв гэдгийг яагаад батлахгүй вэ?", answer: "Available width өөрчлөгдөхөд flex item-үүдийн нийт хэрэгцээ багтахгүй болж болно. Тиймээс Acceptance Criteria-д төлөөлөх narrow viewport болон runtime хэмжилт заавал орно." },
+      { question: "`overflow:hidden` яагаад энэ дадлагын зөв засвар биш вэ?", answer: "Тэр content болон focus-ийг тайрч symptom-ийг нууна. `wrap` нь item-үүдэд шинэ flex line ашиглах боломж өгч content-ийг харагдах хэвээр хадгална." },
     ],
   },
   aiLab: {
@@ -472,7 +473,7 @@ TASK / ACCEPTANCE CRITERIA:
 Хязгаарлалт:
 - Өгөгдөөгүй test-ийг pass болсон гэж бүү хэл.
 - Хамааралгүй refactor эсвэл style-ийн хувийн сонголт бүү санал болго.
-- !important, inline style, HTML rewrite бүү санал болго.
+- overflow:hidden, absolute positioning, fixed pixel offset, HTML rewrite бүү санал болго.
 - Нотолгоотой асуудал олдохгүй бол "нотолгоотой асуудал олдсонгүй" гэж хэл.
 - Эцсийн шийдвэрийг надад үлдээ.`,
     steps: [
@@ -483,9 +484,9 @@ TASK / ACCEPTANCE CRITERIA:
     ],
     verificationTable: [
       { claim: "Code reviewer ажлын хамрах хүрээг ойлгосон", evidence: "AI илэрсэн асуудлаа diff эсвэл acceptance criteria-гийн яг мөртэй холбосон", pass: "Хамааралгүй refactor санал болгоогүй" },
-      { claim: "Runtime дээрх state засвар хадгалагдсан", evidence: "Source patch-ийн дараах Refresh + normal/invalid input-ийн Computed border-color", pass: "Normal саарал, invalid улаан border бодит browser дээр хэвээр" },
-      { claim: "Regression-оос хамгаалсан", evidence: "Labels + error message + aria attributes + keyboard focus + HTML diff", pass: "Accessibility холбоос, content, focus хэвээр; HTML өөрчлөгдөөгүй" },
-      { claim: "Эцсийн хамрах хүрээ хамгийн бага", evidence: "git diff -- index.html styles.css lesson-08-prompt-log.md", pass: "Зөвхөн үндэслэлтэй CSS өөрчлөлт болон сургалтын log орсон" },
+      { claim: "Responsive засвар source-оос хадгалагдсан", evidence: "Refresh-ийн дараах 720px/360px layout + Computed flex-wrap + scrollWidth/clientWidth", pass: "720px нэг мөр; 360px overflow-гүй, wrap хийсэн" },
+      { claim: "Regression-оос хамгаалсан", evidence: "Avatar size + бүх text + profile link keyboard focus + HTML diff", pass: "Content, avatar, focus хэвээр; HTML өөрчлөгдөөгүй" },
+      { claim: "Эцсийн хамрах хүрээ хамгийн бага", evidence: "git diff -- index.html styles.css lesson-08-prompt-log.md", pass: "Зөвхөн flex-wrap value болон сургалтын log өөрчлөгдсөн" },
     ],
     teacherNotes: [
       "AI ‘test нэм’ гэж ерөнхий хэлбэл энэ static HTML/CSS ажилд яг ямар browser шалгалт хийхийг тодруул. Тодорхой бус дүгнэлтээс татгалзаж болно.",
@@ -541,7 +542,7 @@ TASK / ACCEPTANCE CRITERIA:
     nextLesson: {
       title: "Хичээл 09 — Flexbox",
       connection:
-        "Одоо сурагч CSS layout-ийн ажлыг хэмжиж болох зорилго, хязгаарлалт, viewport-ийн нотолгоо, баталгаажуулах алхамтайгаар AI-д өгч чадна. Дараагийн хичээлээр Flexbox-ийн axis болон alignment-ийн ажиллагааг эхлээд өөрөө ойлгож, дараа нь энэ prompt болон нотолгоонд тулгуурласан ажлын урсгалаар layout-аа туршина.",
+        "Энэ дадлагаар сурагч `nowrap` болон `wrap` behavior-ийг нотолгоогоор урьдчилан харлаа. Дараагийн хичээлээр Flexbox-ийн axis, alignment, sizing-ийг системтэй ойлгож, энэ prompt болон verification урсгалаар илүү бүрэн layout бүтээнэ.",
     },
     teacherClose:
       "“AI-аас зөв хариулт гуйх нь гол биш. Асуудлаа баримтаар тодорхойлж, нэг hypothesis шалгаж, ажил дууссаныг өөрөө нотлох нь prompt engineering юм” гэж хичээлээ хаа.",
