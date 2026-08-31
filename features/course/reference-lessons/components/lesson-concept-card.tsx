@@ -1,15 +1,18 @@
-import { AlertTriangle, CheckCircle2, MessageCircleQuestion, Sparkles } from "lucide-react";
+import { AlertTriangle, BookOpenText, CheckCircle2, ChevronRight, MessageCircleQuestion, Sparkles } from "lucide-react";
 import type { LessonConcept, LessonMode } from "../types";
 import { CopyCodeBlock } from "../../components/copy-code-block";
 import { LessonDiagram } from "./lesson-diagram";
+import { LessonFormatBlocks } from "./lesson-format-blocks";
 import { AnswerDisclosure, TeacherOnly, TeachingNote } from "./teacher-content";
 
 export function LessonConceptCard({
   concept,
   mode,
+  tutorial = false,
 }: {
   concept: LessonConcept;
   mode: LessonMode;
+  tutorial?: boolean;
 }) {
   return (
     <article id={`concept-${concept.id}`} className="reference-concept-card">
@@ -27,6 +30,7 @@ export function LessonConceptCard({
       </div>
 
       <div className="concept-explanation">
+        <div className="reference-card-label"><BookOpenText size={16} />ТАЙЛБАР</div>
         {concept.explanation.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
       </div>
 
@@ -37,7 +41,7 @@ export function LessonConceptCard({
           <p>{concept.mentalModel.explanation}</p>
         </div>
         <div className="concrete-example-card">
-          <span>БОДИТ ЖИШЭЭ</span>
+          <span>{tutorial ? "EXAMPLE" : "БОДИТ ЖИШЭЭ"}</span>
           <strong>{concept.example.title}</strong>
           <p>{concept.example.explanation}</p>
           {concept.example.code && (
@@ -54,8 +58,15 @@ export function LessonConceptCard({
               {concept.example.blocks.map((block) => <CopyCodeBlock block={block} key={block.title} />)}
             </div>
           ) : null}
+          {tutorial && (
+            <a className="tutorial-try-button" href="#practice">
+              Өөрөө турших <ChevronRight size={16} aria-hidden="true" />
+            </a>
+          )}
         </div>
       </div>
+
+      {concept.formatBlocks?.length ? <LessonFormatBlocks blocks={concept.formatBlocks} /> : null}
 
       {concept.diagram && <LessonDiagram diagram={concept.diagram} />}
 

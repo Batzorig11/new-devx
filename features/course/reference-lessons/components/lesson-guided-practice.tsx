@@ -1,4 +1,4 @@
-import { Check, Flag, ShieldCheck } from "lucide-react";
+import { Check, ExternalLink, Flag, ImageIcon, ShieldCheck } from "lucide-react";
 import type { ReferenceLesson, LessonMode } from "../types";
 import { CopyCodeBlock } from "../../components/copy-code-block";
 import { AnswerDisclosure } from "./teacher-content";
@@ -21,6 +21,20 @@ export function LessonGuidedPractice({
       title={`Guided Practice — ${practice.title}`}
       introduction={practice.goal}
     >
+      {practice.referenceLink && (
+        <aside className="practice-reference-link">
+          <ImageIcon size={21} aria-hidden="true" />
+          <div>
+            <span>ЗУРГАН ДААЛГАВАР</span>
+            <strong>{practice.referenceLink.title}</strong>
+            <p>{practice.referenceLink.description}</p>
+          </div>
+          <a href={practice.referenceLink.href} target="_blank" rel="noreferrer">
+            {practice.referenceLink.label}<ExternalLink size={15} aria-hidden="true" />
+          </a>
+        </aside>
+      )}
+
       {practice.starterCode?.map((block) => <CopyCodeBlock block={block} key={block.title} />)}
 
       <div className="practice-layout">

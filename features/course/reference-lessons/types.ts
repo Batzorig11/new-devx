@@ -25,6 +25,44 @@ export type LessonDiagram = {
   }>;
 };
 
+export type LessonSyntaxGroup = {
+  title: string;
+  appliesTo?: "container" | "item";
+  badge?: string;
+  explanation: string;
+  code: CopyBlock;
+  properties: Array<{
+    property: string;
+    values: string;
+    meaning: string;
+  }>;
+};
+
+export type LessonFormatBlock =
+  | {
+      type: "comparison";
+      title: string;
+      columns: [string, string];
+      rows: Array<{ label: string; left: string; right: string }>;
+    }
+  | {
+      type: "sequence";
+      title: string;
+      items: Array<{ title: string; detail: string }>;
+    }
+  | {
+      type: "checklist";
+      title: string;
+      items: string[];
+    }
+  | {
+      type: "callout";
+      eyebrow: string;
+      title: string;
+      body: string;
+      tone?: "info" | "warning" | "success";
+    };
+
 export type TeachingQuestion = {
   question: string;
   answer: string;
@@ -40,6 +78,7 @@ export type LessonConcept = {
   id: string;
   number: string;
   title: string;
+  tutorialLabel?: string;
   eyebrow: string;
   duration: string;
   whyItMatters: string;
@@ -55,6 +94,7 @@ export type LessonConcept = {
     language?: CopyBlock["language"];
     blocks?: CopyBlock[];
   };
+  formatBlocks?: LessonFormatBlock[];
   diagram?: LessonDiagram;
   questions: TeachingQuestion[];
   misconceptions: Misconception[];
@@ -79,6 +119,18 @@ export type ReferenceLesson = {
   id: number;
   durationMinutes: number;
   teacherGoal: string;
+  teachStyle?: "tutorial";
+  teachContent?: {
+    eyebrow: string;
+    title: string;
+    introduction: string;
+    chapterLabel: string;
+  };
+  resources?: Array<{
+    title: string;
+    description: string;
+    href: string;
+  }>;
   sections: ReferenceLessonNavItem[];
   overview: {
     objectives: string[];
@@ -92,6 +144,13 @@ export type ReferenceLesson = {
       title: string;
       teacherAction: string;
     }>;
+  };
+  syntaxGuide?: {
+    eyebrow?: string;
+    title: string;
+    introduction: string;
+    columnLabels?: [string, string, string];
+    groups: LessonSyntaxGroup[];
   };
   concepts: LessonConcept[];
   liveDemo: {
@@ -113,6 +172,12 @@ export type ReferenceLesson = {
     hints: string[];
     expectedResult: string[];
     solutionCode?: CopyBlock[];
+    referenceLink?: {
+      title: string;
+      description: string;
+      href: string;
+      label: string;
+    };
     stretchTask: string;
     debriefQuestions: TeachingQuestion[];
   };

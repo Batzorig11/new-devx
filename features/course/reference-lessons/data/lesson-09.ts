@@ -3,11 +3,19 @@ import type { ReferenceLesson } from "../types";
 export const lesson09Reference: ReferenceLesson = {
   id: 9,
   durationMinutes: 120,
+  teachStyle: "tutorial",
   teacherGoal:
     "Сурагч Flexbox-ийг property цээжлэх сэдэв биш, flex container-ийн direct children-ийг нэг үндсэн тэнхлэгийн дагуу байрлуулж, үлдсэн зай болон багтаамжийг дүрмээр удирддаг layout model гэж ойлгоно. Тэд desktop ба нарийн viewport-д ажиллах toolbar бүтээж, layout-ийн таамгаа DevTools evidence-ээр шалгаж чаддаг болно.",
+  teachContent: {
+    eyebrow: "Алхамчилсан tutorial · Week 03",
+    title: "Агуулга — Flexbox-ийг axis-аар бодож суръя",
+    introduction:
+      "Syntax хүснэгтээс property хаана бичигдэхийг эхлээд ялга. Дараа нь concept бүрийг тайлбар, code example, mental model, харьцуулалт, diagram болон шалгах асуултаар холбож уншаад Practice хэсэгт responsive toolbar бүтээнэ.",
+    chapterLabel: "FLEXBOX АГУУЛГЫН ЗУРАГЛАЛ",
+  },
   sections: [
     { id: "overview", shortLabel: "01", label: "Тойм" },
-    { id: "teach", shortLabel: "02", label: "Заах агуулга" },
+    { id: "teach", shortLabel: "02", label: "Агуулга" },
     { id: "demo", shortLabel: "03", label: "Live demo" },
     { id: "practice", shortLabel: "04", label: "Дадлага" },
     { id: "ai-lab", shortLabel: "05", label: "AI Lab" },
@@ -65,11 +73,130 @@ export const lesson09Reference: ReferenceLesson = {
       { start: "01:58", duration: "2 мин", title: "Wrap-up ба Grid bridge", teacherAction: "Нэг хэмжээст Flexbox mental model-ийг нэг өгүүлбэрээр хэлүүлээд хоёр хэмжээст Grid рүү холбо." },
     ],
   },
+  syntaxGuide: {
+    title: "Flexbox syntax-ийг хаана бичиж, мөр бүрийг хэрхэн унших вэ?",
+    introduction:
+      "Эхлээд container ба item-ийг ялга. Дараа нь property-г нэрээр нь цээжлэхийн оронд аль element дээр бичигдсэн, аль axis эсвэл хэмжээний асуудлыг шийдэж байгаагаар нь унш. Доорх дөрвөн бүлэг нь энэ хичээлд хэрэглэх үндсэн syntax-ийн лавлах болно.",
+    groups: [
+      {
+        title: "Flex container үүсгэж, main axis-ийг сонгох",
+        appliesTo: "container",
+        explanation:
+          "display: flex нь сонгосон parent-ийг flex container болгож, зөвхөн direct children-ийг flex item болгоно. flex-direction нь items ямар main axis дагуу дараалж байрлахыг тогтооно; бичээгүй үед row default утгатай.",
+        code: {
+          title: "Container-ийн хамгийн бага syntax",
+          language: "css",
+          code: ".container {\n  display: flex;\n  flex-direction: row;\n}",
+          note: "Эдгээр property-г зэрэгцүүлэх children дээр биш, тэдний нийтлэг parent дээр бичнэ.",
+        },
+        properties: [
+          {
+            property: "display",
+            values: "flex | inline-flex",
+            meaning: "Element-ийг flex container болгож, direct children-д Flexbox layout хэрэглэнэ.",
+          },
+          {
+            property: "flex-direction",
+            values: "row | column | row-reverse | column-reverse",
+            meaning: "Main axis болон items-ийн visual урсах чиглэлийг сонгоно. Reverse утга DOM order-ийг өөрчлөхгүй.",
+          },
+        ],
+      },
+      {
+        title: "Items хоорондын зай ба шинэ мөрийг удирдах",
+        appliesTo: "container",
+        explanation:
+          "gap нь зөвхөн flex items-ийн хооронд тогтмол зай гаргана. flex-wrap нь items нэг мөрөнд багтахгүй үед дараагийн flex line руу орохыг зөвшөөрнө; default нь nowrap тул wrap behavior-ийг хэрэгцээнээсээ шалтгаалан ил тод бич.",
+        code: {
+          title: "Зайтай, wrap хийдэг container",
+          language: "css",
+          code: ".tag-list {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.5rem 1rem;\n}",
+          note: "Хоёр gap утгын эхнийх нь row gap, хоёр дахь нь column gap. Нэг утга бичвэл хоёуланд адил үйлчилнэ.",
+        },
+        properties: [
+          {
+            property: "gap",
+            values: "<row-gap> <column-gap>",
+            meaning: "Flex lines болон adjacent items-ийн хоорондын minimum зайг container-аас удирдана.",
+          },
+          {
+            property: "flex-wrap",
+            values: "nowrap | wrap | wrap-reverse",
+            meaning: "Items нэг line-д үлдэх үү, эсвэл багтахгүй үед шинэ line үүсгэх үү гэдгийг шийднэ.",
+          },
+        ],
+      },
+      {
+        title: "Main ба cross axis дээр alignment хийх",
+        appliesTo: "container",
+        explanation:
+          "justify-content нь main axis дээрх free space-ийг, align-items нь тухайн flex line-ийн cross axis дээр item box-уудыг байрлуулна. Тиймээс row үед horizontal/vertical гэж цээжлэхгүй; flex-direction-ээ эхлээд унш.",
+        code: {
+          title: "Toolbar alignment syntax",
+          language: "css",
+          code: ".toolbar {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 1rem;\n}",
+          note: "space-between extra free space-ийг хуваадаг; minimum spacing-ийг gap тусад нь батална.",
+        },
+        properties: [
+          {
+            property: "justify-content",
+            values: "start | center | end | space-between | space-around | space-evenly",
+            meaning: "Бүх items бүлгийг main axis дээр байрлуулж, үлдсэн зайг сонгосон дүрмээр хуваана.",
+          },
+          {
+            property: "align-items",
+            values: "stretch | start | center | end | baseline",
+            meaning: "Нэг flex line дэх бүх items-ийн cross-axis default alignment-ийг тогтооно.",
+          },
+          {
+            property: "align-content",
+            values: "stretch | start | center | end | space-between",
+            meaning: "Олон flex line ба cross-axis extra space хоёул байгаа үед line-уудыг бүхэлд нь байрлуулна.",
+          },
+        ],
+      },
+      {
+        title: "Нэг flex item-ийн эхлэх хэмжээ, өсөлт ба агшилтыг өгөх",
+        appliesTo: "item",
+        explanation:
+          "flex shorthand-ийн гурван утгыг grow → shrink → basis дарааллаар уншина. Browser basis-ээс эхэлж, container-д илүү зай байвал grow, зай дутагдвал shrink-ээр эцсийн хэмжээг тооцно.",
+        code: {
+          title: "flex shorthand-ийг задлан унших",
+          language: "css",
+          code: ".summary {\n  flex: 1 1 20rem;\n  min-width: 0;\n}\n\n.actions {\n  flex: 0 1 auto;\n}",
+          note: "flex: 1 1 20rem = flex-grow: 1; flex-shrink: 1; flex-basis: 20rem.",
+        },
+        properties: [
+          {
+            property: "flex-basis",
+            values: "auto | <length> | 0",
+            meaning: "Free space хуваахаас өмнөх main-axis preferred starting size-ийг өгнө.",
+          },
+          {
+            property: "flex-grow",
+            values: "<number>",
+            meaning: "Эерэг free space-ээс item ямар харьцаагаар share авахыг тодорхойлно; default 0.",
+          },
+          {
+            property: "flex-shrink",
+            values: "<number>",
+            meaning: "Зай дутагдсан үед item багасахад оролцох эсэх, харьцааг тогтооно; default 1.",
+          },
+          {
+            property: "align-self",
+            values: "auto | stretch | start | center | end",
+            meaning: "Зөвхөн энэ item-д container-ийн align-items утгыг override хийнэ.",
+          },
+        ],
+      },
+    ],
+  },
   concepts: [
     {
       id: "container-and-items",
       number: "01",
       title: "Flexbox parent ба direct children-ийн хооронд layout contract үүсгэнэ",
+      tutorialLabel: "Flexbox танилцуулга",
       eyebrow: "container · direct child · nested content",
       duration: "10–12 минут",
       whyItMatters:
@@ -118,6 +245,7 @@ export const lesson09Reference: ReferenceLesson = {
       id: "axes-and-direction",
       number: "02",
       title: "flex-direction main axis-ийг тогтоож, бусад property тэр axis-ийг дагана",
+      tutorialLabel: "Direction ба axis",
       eyebrow: "row · column · main axis · cross axis",
       duration: "10–12 минут",
       whyItMatters:
@@ -140,6 +268,18 @@ export const lesson09Reference: ReferenceLesson = {
         code: ".actions {\n  display: flex;\n  flex-direction: row;    /* main axis: inline */\n}\n\n.actions.stacked {\n  flex-direction: column; /* main axis: block */\n}",
         language: "css",
       },
+      formatBlocks: [
+        {
+          type: "comparison",
+          title: "row ба column үед property-г axis-аар унших",
+          columns: ["ROW", "COLUMN"],
+          rows: [
+            { label: "Main axis", left: "Ихэнхдээ хэвтээ", right: "Босоо" },
+            { label: "justify-content", left: "Хэвтээ free space", right: "Босоо free space" },
+            { label: "align-items", left: "Босоо cross axis", right: "Хэвтээ cross axis" },
+          ],
+        },
+      ],
       diagram: {
         label: "row layout-ийн хоёр тэнхлэг",
         nodes: [
@@ -166,6 +306,7 @@ export const lesson09Reference: ReferenceLesson = {
       id: "gap-and-wrap",
       number: "03",
       title: "gap тогтмол зай өгч, flex-wrap багтахгүй items-ийг шинэ мөрт оруулна",
+      tutorialLabel: "Gap ба wrap",
       eyebrow: "spacing · available space · new flex line",
       duration: "9–11 минут",
       whyItMatters:
@@ -206,6 +347,7 @@ export const lesson09Reference: ReferenceLesson = {
       id: "alignment",
       number: "04",
       title: "Alignment property сонгохын өмнө axis ба free space-ээ олно",
+      tutorialLabel: "Flex alignment",
       eyebrow: "justify · align · free space · self",
       duration: "10–12 минут",
       whyItMatters:
@@ -254,6 +396,7 @@ export const lesson09Reference: ReferenceLesson = {
       id: "flex-sizing",
       number: "05",
       title: "flex-basis эхлэх хэмжээг, grow илүүдлийг, shrink дутагдлыг шийднэ",
+      tutorialLabel: "Flex item sizing",
       eyebrow: "basis → free space → grow/shrink",
       duration: "12–14 минут",
       whyItMatters:
@@ -277,6 +420,18 @@ export const lesson09Reference: ReferenceLesson = {
         code: ".toolbar-title {\n  flex: 1 1 16rem;\n  min-width: 0;\n}\n\n.toolbar-actions {\n  flex: 0 1 auto;\n  display: flex;\n  gap: 0.5rem;\n}\n\n/* Унших нь: grow shrink basis */",
         language: "css",
       },
+      formatBlocks: [
+        {
+          type: "sequence",
+          title: "Flex item-ийн эцсийн хэмжээ тооцогдох дараалал",
+          items: [
+            { title: "Basis", detail: "Item бүрийн preferred starting size-ийг авна." },
+            { title: "Free space", detail: "Container-ийн available size-тай нийлбэрийг харьцуулна." },
+            { title: "Grow / shrink", detail: "Илүүдэл эсвэл дутагдлыг ratio-гаар хуваана." },
+            { title: "Final size", detail: "min/max constraint болон content-ийн доод хязгаарыг хэрэглэнэ." },
+          ],
+        },
+      ],
       diagram: {
         label: "Flex item-ийн main-size шийдвэр",
         nodes: [
@@ -304,6 +459,7 @@ export const lesson09Reference: ReferenceLesson = {
       id: "patterns-and-evidence",
       number: "06",
       title: "Flexbox-ийг нэг хэмжээст зорилгод сонгож, viewport ба DevTools-оор батална",
+      tutorialLabel: "Patterns ба шалгалт",
       eyebrow: "pattern · responsive · inspect · Grid boundary",
       duration: "9–11 минут",
       whyItMatters:

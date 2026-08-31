@@ -65,7 +65,7 @@ export function ReferenceLesson({ lesson }: { lesson: ReferenceLessonData }) {
   }
 
   return (
-    <div className={`reference-lesson ${mode === "projector" ? "projector-mode" : "teacher-mode"}`}>
+    <div className={`reference-lesson ${mode === "projector" ? "projector-mode" : "teacher-mode"}${lesson.teachStyle === "tutorial" ? " tutorial-lesson" : ""}`}>
       <LessonModeToolbar mode={mode} onChange={handleModeChange} />
       <LessonSectionNav lessonId={lesson.id} items={lesson.sections} activeId={activeId} onNavigate={setActiveId} />
       <LessonOverview lesson={lesson} mode={mode} />
