@@ -160,7 +160,7 @@ export const lesson12Reference: ReferenceLesson = {
         duration: "2 мин",
         title: "Next lesson bridge",
         teacherAction:
-          "Tool сонголтын mental model-ийг Tailwind/UI implementation-д AI diff шалгах ажил руу холбо.",
+          "Tool сонголтын mental model-ийг CSS motion implementation-д AI санал шалгах ажил руу холбо.",
       },
     ],
   },
@@ -879,9 +879,9 @@ Output:
       },
     ],
     nextLesson: {
-      title: "Lesson 13 — Tailwind CSS ба UI өнгөлгөө",
+      title: "Lesson 13 — CSS animation, transform ба transition",
       connection:
-        "Одоо сурагч layout intent, responsive evidence, AI tool/cost decision-ээ мэднэ. Дараагийн хичээлээр utility-first styling ашиглахдаа AI-аар хөрвүүлсэн class diff-ийг сохроор хуулахгүй, design token, responsive behavior, build output-оор шалгана.",
+        "Одоо layout intent, responsive evidence, AI tool/cost decision-ийн суурь бэлэн. Дараагийн guide-д transform, transition, keyframe animation ашиглан purposeful motion бүтээж, keyboard focus, performance, reduced-motion behavior-ийг DevTools evidence-ээр шалгана.",
     },
     teacherClose:
       "Хамгийн сайн AI гэж байхгүй. Тухайн task-д зөв tool, зөв model, зөв cost байдаг.",

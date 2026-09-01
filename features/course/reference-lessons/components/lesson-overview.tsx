@@ -10,12 +10,14 @@ export function LessonOverview({
   lesson: ReferenceLesson;
   mode: LessonMode;
 }) {
+  const tutorial = lesson.teachStyle === "tutorial";
+
   return (
     <LessonSection
       id="overview"
       number="01"
-      eyebrow="Хичээл эхлэхийн өмнө"
-      title="Overview — өнөөдөр хаашаа хүрэх вэ?"
+      eyebrow={tutorial ? "Guide эхлэхийн өмнө" : "Хичээл эхлэхийн өмнө"}
+      title={tutorial ? "Overview — юу сурч, юу бүтээх вэ?" : "Overview — өнөөдөр хаашаа хүрэх вэ?"}
       introduction={lesson.teacherGoal}
     >
       <div className="reference-overview-grid">
@@ -29,7 +31,7 @@ export function LessonOverview({
         </article>
         <article className="overview-outcomes">
           <span>ХИЧЭЭЛИЙН ЭЦЭСТ</span>
-          <strong>Сурагч нотолгоонд тулгуурлан тайлбарлана.</strong>
+          <strong>{tutorial ? "Ойлголт бүрийг ажилладаг жишээ, нотолгоотой холбоно." : "Сурагч нотолгоонд тулгуурлан тайлбарлана."}</strong>
           <ul>{lesson.overview.outcomes.map((outcome) => <li key={outcome}>{outcome}</li>)}</ul>
         </article>
       </div>
@@ -45,9 +47,13 @@ export function LessonOverview({
         </article>
       </div>
 
-      <TeacherOnly mode={mode}>
-        <TeachingNote notes={lesson.overview.preparation} />
-      </TeacherOnly>
+      {tutorial ? (
+        <TeachingNote notes={lesson.overview.preparation} label="ЭХЛЭХИЙН ӨМНӨХ БЭЛТГЭЛ" />
+      ) : (
+        <TeacherOnly mode={mode}>
+          <TeachingNote notes={lesson.overview.preparation} />
+        </TeacherOnly>
+      )}
 
       <div className="reference-timeline">
         <div className="reference-subheading">

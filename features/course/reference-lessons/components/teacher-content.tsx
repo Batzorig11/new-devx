@@ -13,10 +13,10 @@ export function TeacherOnly({
   return <div className="teacher-only-content">{children}</div>;
 }
 
-export function TeachingNote({ notes }: { notes: string[] }) {
+export function TeachingNote({ notes, label = "БАГШИЙН ТЭМДЭГЛЭЛ" }: { notes: string[]; label?: string }) {
   return (
     <aside className="reference-teaching-note">
-      <div><Lightbulb size={17} /><span>БАГШИЙН ТЭМДЭГЛЭЛ</span></div>
+      <div><Lightbulb size={17} /><span>{label}</span></div>
       <ul>{notes.map((note) => <li key={note}>{note}</li>)}</ul>
     </aside>
   );
@@ -25,18 +25,26 @@ export function TeachingNote({ notes }: { notes: string[] }) {
 export function AnswerDisclosure({
   mode,
   label = "Багшийн хариу",
+  alwaysVisible = false,
   children,
 }: {
   mode: LessonMode;
   label?: string;
+  alwaysVisible?: boolean;
   children: ReactNode;
 }) {
+  const disclosure = (
+    <details className="reference-disclosure" open={!alwaysVisible}>
+      <summary><LockKeyhole size={14} />{label}</summary>
+      <div>{children}</div>
+    </details>
+  );
+
+  if (alwaysVisible) return disclosure;
+
   return (
     <TeacherOnly mode={mode}>
-      <details className="reference-disclosure" open>
-        <summary><LockKeyhole size={14} />{label}</summary>
-        <div>{children}</div>
-      </details>
+      {disclosure}
     </TeacherOnly>
   );
 }

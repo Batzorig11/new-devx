@@ -133,11 +133,11 @@ const rawLessons: Omit<Lesson, "week">[] = [
   {
     id: 13,
     module: "HTML & CSS",
-    title: "Tailwind CSS ба UI өнгөлгөө",
+    title: "CSS animation, transform ба transition",
     summary:
-      "Utility-first CSS, component загвар, transition, keyframe болон бичил хөдөлгөөн ашиглах",
+      "Transform, transition, keyframe animation болон хөдөлгөөний accessibility-г ашиглах",
     aiAngle:
-      "Энгийн CSS-ийг AI-аар Tailwind руу хөрвүүлээд зөв эсэхийг өөрөө шалгах",
+      "AI-аар motion санал гаргуулж, timing, performance, reduced-motion-ийг өөрөө шалгах",
     kind: "lesson",
   },
   {
@@ -145,7 +145,7 @@ const rawLessons: Omit<Lesson, "week">[] = [
     module: "HTML & CSS",
     title: "AI редактор",
     summary:
-      "Tab completion, inline edit, codebase chat болон GUI ба CLI хэрэгслийн ялгааг ашиглах",
+      "GitHub Copilot, Cursor, Devin зэрэг хэрэгслийн completion, edit, chat, agent workflow-ийг ялгах",
     aiAngle:
       "AI-ийн diff-ийг зөвшөөрөхөөс өмнө уншиж, 90% зөв код дахь 10% алдааг олох",
     kind: "ai",
@@ -165,7 +165,7 @@ const rawLessons: Omit<Lesson, "week">[] = [
     module: "HTML & CSS",
     title: "Төсөл 1: Portfolio сайт",
     summary:
-      "HTML, CSS эсвэл Tailwind-аар responsive, хүртээмжтэй portfolio сайтыг нийтлэх",
+      "HTML, CSS болон зорилготой motion ашиглан responsive, хүртээмжтэй portfolio сайтыг нийтлэх",
     aiAngle:
       "Эхлээд гараар бүтээж, дараа нь AI-ийн санал бүрийг үндэслэлтэй хүлээн авах эсвэл татгалзах",
     kind: "project",

@@ -72,14 +72,14 @@ export function LessonConceptCard({
 
       <section className="concept-questions">
         <div className="reference-subheading">
-          <div><MessageCircleQuestion size={17} /><span>СУРАГЧДААС АСУУ</span></div>
-          <small>Хариулахаас нь өмнө 5–10 секунд хүлээ</small>
+          <div><MessageCircleQuestion size={17} /><span>{tutorial ? "ӨӨРИЙГӨӨ ШАЛГАХ" : "СУРАГЧДААС АСУУ"}</span></div>
+          <small>{tutorial ? "Хариуг нээхээс өмнө өөрийн тайлбарыг бич" : "Хариулахаас нь өмнө 5–10 секунд хүлээ"}</small>
         </div>
         <ol>
           {concept.questions.map((item, index) => (
             <li key={item.question}>
               <div><span>{String(index + 1).padStart(2, "0")}</span><p>{item.question}</p></div>
-              <AnswerDisclosure mode={mode}>
+              <AnswerDisclosure mode={mode} alwaysVisible={tutorial} label={tutorial ? "Хариу ба тайлбар" : undefined}>
                 <p><strong>Хариу:</strong> {item.answer}</p>
                 {item.followUp && <p><strong>Follow-up:</strong> {item.followUp}</p>}
               </AnswerDisclosure>
@@ -88,7 +88,20 @@ export function LessonConceptCard({
         </ol>
       </section>
 
-      <TeacherOnly mode={mode}>
+      {tutorial ? (
+        <>
+          <div className="misconception-list">
+            <div className="reference-card-label"><AlertTriangle size={16} />ТҮГЭЭМЭЛ ЭНДҮҮРЭЛ</div>
+            {concept.misconceptions.map((item) => (
+              <div key={item.claim}>
+                <p><del>{item.claim}</del></p>
+                <p><CheckCircle2 size={14} />{item.correction}</p>
+              </div>
+            ))}
+          </div>
+          {concept.teachingNotes.length ? <TeachingNote notes={concept.teachingNotes} label="СУДЛАХ ТЭМДЭГЛЭЛ" /> : null}
+        </>
+      ) : <TeacherOnly mode={mode}>
         <div className="misconception-list">
           <div className="reference-card-label"><AlertTriangle size={16} />ТҮГЭЭМЭЛ ЭНДҮҮРЭЛ</div>
           {concept.misconceptions.map((item) => (
@@ -99,7 +112,7 @@ export function LessonConceptCard({
           ))}
         </div>
         <TeachingNote notes={concept.teachingNotes} />
-      </TeacherOnly>
+      </TeacherOnly>}
 
       <footer className="concept-takeaway">
         <span>KEY TAKEAWAY</span>

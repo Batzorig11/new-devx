@@ -11,6 +11,7 @@ import { lesson09Reference } from "./lesson-09";
 import { lesson10Reference } from "./lesson-10";
 import { lesson11Reference } from "./lesson-11";
 import { lesson12Reference } from "./lesson-12";
+import { weekThreeAndFourReferenceLessons } from "./week-03-04";
 
 export const referenceLessonById: Partial<Record<number, ReferenceLesson>> = {
   1: lesson01Reference,
@@ -25,4 +26,8 @@ export const referenceLessonById: Partial<Record<number, ReferenceLesson>> = {
   10: lesson10Reference,
   11: lesson11Reference,
   12: lesson12Reference,
+  13: weekThreeAndFourReferenceLessons[13],
+  14: weekThreeAndFourReferenceLessons[14],
+  15: weekThreeAndFourReferenceLessons[15],
+  16: weekThreeAndFourReferenceLessons[16],
 };
